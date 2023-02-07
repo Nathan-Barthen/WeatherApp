@@ -185,7 +185,7 @@ html, body {
    		color: rgb(230, 184, 0);
    		font-size: 45px;
    }
-   #top-TodayDiv{
+   #top-TodayDiv {
    		width: 33%;
    		height: 100%;
    		display: flex;
@@ -194,7 +194,11 @@ html, body {
 	    text-align: center;
 	    border-right: 4px solid black;
    }
-   #top-TomorrowDiv{
+   #top-TodayDiv:hover {
+    	background-color: rgb(0, 0, 255);
+    	cursor: pointer;
+   }
+   #top-TomorrowDiv {
    		width: 33%;
    		height: 100%;
    		
@@ -204,13 +208,21 @@ html, body {
 	    text-align: center;
 	    border-right: 4px solid black;
    }
-   #top-5DayDiv{
-   		width: 33%;
+   #top-TomorrowDiv:hover {
+    	background-color: rgb(0, 0, 255);
+    	cursor: pointer;
+   }
+   #top-5DayDiv {
+   		width: 33.3%;
    		height: 100%;
    		display: flex;
    		justify-content: center;
 	    align-items: center;
 	    text-align: center;
+   }
+   #top-5DayDiv:hover {
+    	background-color: rgb(0, 0, 255);
+    	cursor: pointer;
    }
    
    /* END TOP SECTION */
@@ -450,7 +462,7 @@ html, body {
   } 
    
    
-   
+  /* START ADVANCED INFO */ 
    
    #bottom-advancedInfo {
    		width: 100%;
@@ -466,32 +478,156 @@ html, body {
 	    font-size: 50px;
 	    position: absolute;
    }
-   #bottom-advancedInfo-title {
+   #bottom-advancedInfo-Title {
    		padding-left: 10px;
    		display: flex;
    		top: 0;
    		left: 0;
    		border-bottom: 3px solid black;
    }
+   #bottom-advancedInfo-Title:hover {
+    	background-color: rgb(128, 128, 128);
+    	cursor: pointer;
+   }
+  
    #bottom-advancedInfo-hiddenContent {
    		display: none;
-   		padding-top: 30px;
+   		padding-top: 5px;
    		font-size: 30px;
    }
    #bottom-advancedInfo.expanded #bottom-advancedInfo-hiddenContent {
 	  display: block;
 	}
 	
+	#hiddenContent-tempGraph-Title {
+		height: 5%;
+		width: 100%;
+		color: rgb(0, 0, 204);
+		display: flex;
+		justify-content: center;
+	    align-items: center;
+	    text-align: center;
+	    padding-bottom: 5px;
+	    text-decoration: underline;
+	    
+	    width: 920px;
+	    height: 20px;
+	    margin: 0 auto;
+	    margin-top: 15px;
+	    padding-bottom: 10px;
+	    padding-top: 10px;
+	    background-color: rgb(153, 204, 255);
+	    border-top: 3px solid black;
+	    border-left: 3px solid black;
+	    border-right: 3px solid black;
+	}
 	#graph-container {
-	  width: 800px;
-	  height: 400px;
+	  width: 920px;
+	  height: 450px;
 	  margin: 0 auto;
 	  background-color: rgb(153, 204, 255);
+	  border-left: 3px solid black;
+	  border-right: 3px solid black;
 	}
+	#hiddenContent-tempValuesDiv {
+		width: 920px;
+	  	height: 35px;
+	  	margin: 0 auto;
+	  	font-size: 26px;
+	  	display: flex;
+	 	flex-wrap: wrap;
+	 	background-color: rgb(153, 204, 255);
+	 	color: rgb(153, 122, 0);
+	 	
+	 	border-bottom: 3px solid black;
+	    border-left: 3px solid black;
+	    border-right: 3px solid black;
+	}
+		#hiddenContent-avgTempValues1 {
+			width: 11.5%;
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 30px;
+		}
+		#hiddenContent-avgTempValues2 {
+			width: 11.5%;
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 12px;
+		}
+		#hiddenContent-avgTempValues3 {
+			width: 12.5%;
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 10px;
+		}
+		#hiddenContent-avgTempValues4 {
+			width: 12.5%;
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 0px;
+		}
+		#hiddenContent-avgTempValues5 {
+			width: 12.5%;
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 0px;
+		}
+		#hiddenContent-avgTempValues6 {
+			width: 12.5%;
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 0px;
+		}
+		#hiddenContent-avgTempValues7 {
+			width: 12.5%;
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 0px;
+		}
+		#hiddenContent-avgTempValues8 {
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 0px;
+		    
+		}
 	
-	
-	
-	
+	#hiddenContent-otherInfo {
+		width: 95%;
+		height: 40%;
+		
+		border-top: 3px solid black;
+		margin: auto;
+		margin-top: 20px;
+		justify-content: center;
+	    align-items: center;
+	    text-align: center;
+		display: flex;
+		flex-dirction: row;
+		font-size: 50px;
+	}
+	#hiddenContent-otherInfo-col1 {
+		width: 50%;
+		height: 90%;
+		justify-content: center;
+	    align-items: center;
+	    text-align: start;
+	    padding-left: 50px;
+		margin: auto;
+		margin-top: 20px;
+	}
+	#hiddenContent-otherInfo-col2 {
+		width: 50%;
+		height: 90%;
+		justify-content: center;
+	    align-items: center;
+	    text-align: start;
+	    padding-left: 50px;
+	    border-left: 1px solid black;
+	    margin: auto;
+		margin-top: 20px;
+	}
+	 /* END ADVANCED INFO */
 	
 	
 	
@@ -518,7 +654,7 @@ html, body {
        padding-left: 10px;
    }
    #openWeatherLogoImage {
-       padding-left: 10px;
+       padding-left: 20px;
        height: 80px;
        width: 190px;       
        z-index: 1;
