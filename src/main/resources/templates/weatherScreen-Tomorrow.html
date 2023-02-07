@@ -6,9 +6,10 @@
         initial-scale=1">
 <title>Weather App</title>
 
-<link rel="stylesheet" href="/cssStyles/weatherScreenDefault.css">
-
-
+<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-top.css">
+<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-bottom.css">
+<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-advancedInfo.css">
+<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-links.css">
 
 </head>
 <body>
@@ -35,7 +36,7 @@
 		                    Time
 		                </div>
 		                <div id="top-date">
-		                    Date
+		                    Date (TMRW)
 		                </div>
 		            </div>
 		            
@@ -79,8 +80,9 @@
             	<div id="bottom-currentWeatherInfo">
             	
 	                <div id="bottom-currentWeatherInfo-col1">
-	                	<span id="bottom-currentWeatherInfo-col1-time"> <b>Info for 10:21pm:</b> </span>
+	                	<span id="bottom-currentWeatherInfo-col1-title"> <b>Tomorrow:</b> </span>
 						<div id="bottom-currentWeatherInfo-col1-info">
+							Average: 60&#176;F  <br>
 							Real Feel: 54&#176;F                  
 	                	</div>
 	                	<div id="bottom-currentWeatherInfo-col1-sunset">
@@ -101,9 +103,8 @@
 							sdfsdfsdfsdfsdf ghghgh <br> 
 							ghghgh
 	                	</div>
-	                	
-	                
 	                </div>
+	                
             	</div>
             	
             	
@@ -373,15 +374,45 @@
             		</div>
             	</div>
             	
-            	<div id="bottom-advancedInfo">
-            		<div id="bottom-advancedInfo-title">^ Advanced Info</div>
-            		<div id="bottom-advancedInfo-hiddenContent">
-            			dgfgfgfgfg
+            	<div id="advancedInfo">
+            		<div id="advancedInfo-Title">^ Advanced Info</div>
+            		<div id="advancedInfo-hiddenContent">
+            			<span id="hiddenContent-tempGraph-Title">Today's Temperature Graph (&#176;F)</span>
 						<div id="graph-container">
 						  <canvas id="temp-graph"></canvas>
 						</div>
+						<div id="hiddenContent-tempValuesDiv">
+							<div id="hiddenContent-avgTempValues1">20&#176;</div>
+							<div id="hiddenContent-avgTempValues2">22&#176;</div>
+							<div id="hiddenContent-avgTempValues3">24&#176;</div>
+							<div id="hiddenContent-avgTempValues4">25&#176;</div>
+							<div id="hiddenContent-avgTempValues5">26&#176;</div>
+							<div id="hiddenContent-avgTempValues6">24&#176;</div>
+							<div id="hiddenContent-avgTempValues7">22&#176;</div>
+							<div id="hiddenContent-avgTempValues8">20&#176;</div>
+						</div>
 						
-						
+						<div id="hiddenContent-otherInfo">
+							<div id="hiddenContent-otherInfo-col1">
+								<div id="hiddenContent-otherInfo-col1-info">
+									Real Feel: 54&#176;F <br>
+									Wind  <br>
+									Other...
+									                  
+			                	</div>
+			                	
+			                </div>
+			                <div id="hiddenContent-otherInfo-col2">
+			                	<div id="hiddenContent-otherInfo-col2-info">
+									Real Feel: 54&#176;F <br>
+									Wind  <br>
+									Other...
+									                  
+			                	</div>
+	                	
+	                
+	                		</div>
+						</div>
 						
 						        		
             		</div>
@@ -410,74 +441,15 @@
         </div>    
     </div>
 	
-	<script>
-		// Get the advanced info div
-		const advancedInfo = document.getElementById("bottom-advancedInfo");
-		
-		advancedInfo.addEventListener("click", function() {
-		  // Check if the div has the class "expanded"
-		  if (advancedInfo.classList.contains("expanded")) {
-		    // If it has, remove the class "expanded" and set the height back to 6%
-		    advancedInfo.classList.remove("expanded");
-		    advancedInfo.style.height = "3%";
-		    advancedInfo.style.top = "89.8%";
-		    
-		  } else {
-		    // If it doesn't have the class, add the class "expanded" and set the height to 56%
-		    advancedInfo.classList.add("expanded");
-		    advancedInfo.style.height = "45%";
-		    advancedInfo.style.top = "47.8%";
-		    
-		  }
-		});
-	</script>
+	
 	
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<script>
-		var ctx = document.getElementById('temp-graph').getContext('2d');
-		var tempGraph = new Chart(ctx, {
-		  type: 'line',
-		  data: {
-		    labels: ['12am-3am', '3am-6am', '6am-9am', '9am-12pm', '12pm-3pm', '3pm-6pm', '6pm-9pm', '9pm-12am'],
-		    datasets: [
-		      {
-		        label: 'Average Temp',
-		        data: [20, 22, 24, 25, 26, 24, 22, 20],
-		        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-		        borderColor: 'rgba(255, 99, 132, 1)',
-		        borderWidth: 1
-		      },
-		      {
-		        label: 'High Temp',
-		        data: [22, 24, 26, 27, 28, 26, 24, 22],
-		        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-		        borderColor: 'rgba(54, 162, 235, 1)',
-		        borderWidth: 1
-		      },
-		      {
-		        label: 'Low Temp',
-		        data: [18, 20, 22, 24, 25, 23, 21, 19],
-		        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-		        borderColor: 'rgba(75, 192, 192, 1)',
-		        borderWidth: 1
-		      }
-		    ]
-		  },
-		  options: {
-		    scales: {
-		      yAxes: [{
-		        ticks: {
-		          beginAtZero: true
-		        }
-		      }]
-		    }
-		  }
-		});
-		
+	<script src="/javaScript/advancedInfo-Popup.js"></script>
+	<script src="/javaScript/advandedInfo-Graph.js"></script>
+	<script src="/javaScript/clicks-Today.js"></script>
+	<script src="/javaScript/clicks-5DayForeCast.js"></script>
 	
-	</script>
-
-	<script src="/javaScript/RENAME___THIS.js"></script>
+	
 </body>
 </html>
 

@@ -39,25 +39,29 @@ public class MainController {
 		 	
 		 	
 		//change back to "homePage"
-	        return "weatherScreen";
+	        return "weatherScreen-Today";
 	    }
 	 
-	 @RequestMapping({"weather-report/{location}"})
-	    public String getSummoner(@PathVariable("location") String location, @RequestParam(value = "matchType", required = false) String loadMore, Model model) throws JsonMappingException, JsonProcessingException {
+	 @RequestMapping({"weatherReport/{location}/today"})
+	    public String getTodaysReport(@PathVariable("location") String location, @RequestParam(value = "matchType", required = false) String loadMore, Model model) throws JsonMappingException, JsonProcessingException {
 		 	
 		 	
 	        return "homePage";
 	    }
 
 	 	
-	 	//Add summoner to local database (Stored-Summoners.json file)
-		 @PostMapping({"/saveSummoner"})
-		    public void addSummoner() {
-		        //PlayerAcc summoner = getCurrSummoner();
-		        //StoreSummoner.storeSummonerToFile(summoner);
-		        
-		}
-	 
+	 @RequestMapping({"weatherReport/location/tomorrow"})
+	    public String getTomorrowsReport(Model model) throws JsonMappingException, JsonProcessingException {
+		 	
+		 	
+	        return "weatherScreen-Tomorrow";
+	    }
+	 @RequestMapping({"weatherReport/location/5-DayForecast"})
+	    public String get5DayReport(Model model) throws JsonMappingException, JsonProcessingException {
+		 	
+		 	
+	        return "weatherScreen-5DayForecast";
+	    }
 	 
 	 
 	

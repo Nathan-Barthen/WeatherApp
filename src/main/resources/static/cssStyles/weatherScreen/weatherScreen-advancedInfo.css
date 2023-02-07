@@ -1,0 +1,173 @@
+
+/* ADVANCED INFO */
+
+
+  /* START ADVANCED INFO */ 
+   
+   #advancedInfo {
+   		width: 100%;
+ 	 	height: 3%;
+ 	    top: 89.8%;
+ 	 	
+ 	 	z-index: 4;
+ 	 	bottom: 0;
+ 	 	background-color: rgb(166, 166, 166);
+ 	 	
+	    
+	    border-top: 1px solid black;
+	    font-size: 50px;
+	    position: absolute;
+   }
+   #advancedInfo-Title {
+   		padding-left: 10px;
+   		display: flex;
+   		top: 0;
+   		left: 0;
+   		border-bottom: 3px solid black;
+   }
+   #advancedInfo-Title:hover {
+    	background-color: rgb(128, 128, 128);
+    	cursor: pointer;
+   }
+  
+   #advancedInfo-hiddenContent {
+   		display: none;
+   		padding-top: 5px;
+   		font-size: 30px;
+   }
+   #advancedInfo.expanded #advancedInfo-hiddenContent {
+	  display: block;
+	}
+	
+	#hiddenContent-tempGraph-Title {
+		height: 5%;
+		width: 100%;
+		color: rgb(0, 0, 204);
+		display: flex;
+		justify-content: center;
+	    align-items: center;
+	    text-align: center;
+	    padding-bottom: 5px;
+	    text-decoration: underline;
+	    
+	    width: 920px;
+	    height: 20px;
+	    margin: 0 auto;
+	    margin-top: 15px;
+	    padding-bottom: 10px;
+	    padding-top: 10px;
+	    background-color: rgb(153, 204, 255);
+	    border-top: 3px solid black;
+	    border-left: 3px solid black;
+	    border-right: 3px solid black;
+	}
+	#graph-container {
+	  width: 920px;
+	  height: 450px;
+	  margin: 0 auto;
+	  background-color: rgb(153, 204, 255);
+	  border-left: 3px solid black;
+	  border-right: 3px solid black;
+	}
+	#hiddenContent-tempValuesDiv {
+		width: 920px;
+	  	height: 35px;
+	  	margin: 0 auto;
+	  	font-size: 26px;
+	  	display: flex;
+	 	flex-wrap: wrap;
+	 	background-color: rgb(153, 204, 255);
+	 	color: rgb(153, 122, 0);
+	 	
+	 	border-bottom: 3px solid black;
+	    border-left: 3px solid black;
+	    border-right: 3px solid black;
+	}
+		#hiddenContent-avgTempValues1 {
+			width: 11.5%;
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 30px;
+		}
+		#hiddenContent-avgTempValues2 {
+			width: 11.5%;
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 12px;
+		}
+		#hiddenContent-avgTempValues3 {
+			width: 12.5%;
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 10px;
+		}
+		#hiddenContent-avgTempValues4 {
+			width: 12.5%;
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 0px;
+		}
+		#hiddenContent-avgTempValues5 {
+			width: 12.5%;
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 0px;
+		}
+		#hiddenContent-avgTempValues6 {
+			width: 12.5%;
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 0px;
+		}
+		#hiddenContent-avgTempValues7 {
+			width: 12.5%;
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 0px;
+		}
+		#hiddenContent-avgTempValues8 {
+		  	justify-content: center;
+		    align-items: center;
+		    padding-left: 0px;
+		    
+		}
+	
+	#hiddenContent-otherInfo {
+		width: 95%;
+		height: 40%;
+		
+		border-top: 3px solid black;
+		margin: auto;
+		margin-top: 20px;
+		justify-content: center;
+	    align-items: center;
+	    text-align: center;
+		display: flex;
+		flex-dirction: row;
+		font-size: 50px;
+	}
+	#hiddenContent-otherInfo-col1 {
+		width: 50%;
+		height: 90%;
+		justify-content: center;
+	    align-items: center;
+	    text-align: start;
+	    padding-left: 50px;
+		margin: auto;
+		margin-top: 20px;
+	}
+	#hiddenContent-otherInfo-col2 {
+		width: 50%;
+		height: 90%;
+		justify-content: center;
+	    align-items: center;
+	    text-align: start;
+	    padding-left: 50px;
+	    border-left: 1px solid black;
+	    margin: auto;
+		margin-top: 20px;
+	}
+	 /* END ADVANCED INFO */
+	
+	
+   

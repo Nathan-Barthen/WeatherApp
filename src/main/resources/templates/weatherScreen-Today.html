@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta name="viewport" content="width=device-width,
+        initial-scale=1">
+<title>Weather App</title>
+
+<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-top.css">
+<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-bottom.css">
+<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-advancedInfo.css">
+<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-links.css">
+
+</head>
+<body>
+     <div id="backgr">
+     </div>     
+    <div>
+    </div>
+    <div id="aspect-ratio">
+        <div id="textarea">
+        
+            <div id="top">
+            	<div id="top-search">
+                    <form>
+                        <input type="text" placeholder="Enter ZIP or Town">
+                    </form>
+                </div>
+                
+                <div id="top-columns">
+                	<div id="top-column1">
+	                	<div id="top-location">
+	                    	Location
+		                </div>
+		                <div id="top-time">
+		                    Time
+		                </div>
+		                <div id="top-date">
+		                    Date
+		                </div>
+		            </div>
+		            
+		            <div id="top-column2">
+	                	<div id="top-temp">
+	                    	60&#176;F
+		                </div>
+		                
+		            </div>
+		            
+		            <div id="top-column3">
+	                	<div id="top-imageDiv">
+	                    	<img id="top-currentWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
+		                </div>
+		                <div id="top-imageDisc">
+	                    	Sunny
+		                </div>
+		                <div id="top-imageDisc2">
+	                    	<i>(Expect Sun)</i>
+		                </div>
+		                
+		            </div>
+                </div>
+                <div id="top-daySelector">
+                	<div id="top-TodayDiv">
+                		Today
+                	</div>
+                	<div id="top-TomorrowDiv">
+                		Tomorrow
+                	</div>
+                	<div id="top-5DayDiv">
+                		5-Day Forecast
+                	</div>
+                </div>
+                
+                
+            </div>
+            
+            <div id="bottom">
+            
+            	<div id="bottom-currentWeatherInfo">
+            	
+	                <div id="bottom-currentWeatherInfo-col1">
+	                	<span id="bottom-currentWeatherInfo-col1-title"> <b>Info for 10:21pm:</b> </span>
+						<div id="bottom-currentWeatherInfo-col1-info">
+							Real Feel: 54&#176;F                  
+	                	</div>
+	                	<div id="bottom-currentWeatherInfo-col1-sunset">
+							Sunrise: 7:21am <br>
+							Sunset: 6:37pm
+	                	</div>
+	                	
+	                </div>
+	                <div id="bottom-currentWeatherInfo-col2">
+	                	<div id="bottom-currentWeatherInfo-col2-warningBorder">
+		                	<span id="bottom-currentWeatherInfo-col2-warningTitle"> <b>Weather Warning(s):</b> </span>
+		                	<div id="bottom-currentWeatherInfo-col2-warning">
+								No current Weather Warnings for your area.
+		                	</div>
+	                	</div>
+	                	<div id="bottom-currentWeatherInfo-col2-info">
+							sdsdfsdfsdfsdfm <br>
+							sdfsdfsdfsdfsdf ghghgh <br> 
+							ghghgh
+	                	</div>
+	                </div>
+	                
+            	</div>
+            	
+            	
+            	<div id="bottom-3hourlyWeather1">
+            		<div id="bottom-3hourlyWeather-hourInfo">
+            			<div id="bottom-3hourlyWeather-hourInfo-box">
+            			
+            				<div id="bottom-3hourlyWeather-time">
+            					<b> 12am-3am </b>
+            				</div>
+            				
+            				<div id="bottom-3hourlyWeather-tempAndIcon">
+            					<div id="bottom-3hourlyWeather-temp">
+            						Temp
+            					</div>
+            					<div id="bottom-3hourlyWeather-iconAndDisc">
+            						<div id="bottom-3hourlyWeather-icon">
+            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
+            						</div>
+            						<div id="bottom-3hourlyWeather-iconDisc">
+            							Rainy
+            						</div>
+            					</div>
+            				</div>
+            				
+		            		<div id="bottom-3hourlyWeather-highLow">
+		            				High - Low
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-weatherDisc">
+		            				Light Rain
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-downfall">
+		            				.2in Rain
+		            		</div>	
+            			</div>
+            		</div>
+            		
+            		
+            		<div id="bottom-3hourlyWeather-hourInfo">
+            			<div id="bottom-3hourlyWeather-hourInfo-box">
+            			
+            				<div id="bottom-3hourlyWeather-time">
+            					<b> 12am-3am </b>
+            				</div>
+            				
+            				<div id="bottom-3hourlyWeather-tempAndIcon">
+            					<div id="bottom-3hourlyWeather-temp">
+            						Temp
+            					</div>
+            					<div id="bottom-3hourlyWeather-iconAndDisc">
+            						<div id="bottom-3hourlyWeather-icon">
+            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
+            						</div>
+            						<div id="bottom-3hourlyWeather-iconDisc">
+            							Rainy
+            						</div>
+            					</div>
+            				</div>
+            				
+		            		<div id="bottom-3hourlyWeather-highLow">
+		            				High - Low
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-weatherDisc">
+		            				Light Rain
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-downfall">
+		            				.2in Rain
+		            		</div>	
+            			</div>
+            		</div>
+            		<div id="bottom-3hourlyWeather-hourInfo">
+            			<div id="bottom-3hourlyWeather-hourInfo-box">
+            			
+            				<div id="bottom-3hourlyWeather-time">
+            					<b> 12am-3am </b>
+            				</div>
+            				
+            				<div id="bottom-3hourlyWeather-tempAndIcon">
+            					<div id="bottom-3hourlyWeather-temp">
+            						Temp
+            					</div>
+            					<div id="bottom-3hourlyWeather-iconAndDisc">
+            						<div id="bottom-3hourlyWeather-icon">
+            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
+            						</div>
+            						<div id="bottom-3hourlyWeather-iconDisc">
+            							Rainy
+            						</div>
+            					</div>
+            				</div>
+            				
+		            		<div id="bottom-3hourlyWeather-highLow">
+		            				High - Low
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-weatherDisc">
+		            				Light Rain
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-downfall">
+		            				.2in Rain
+		            		</div>	
+            			</div>
+            		</div>
+            		<div id="bottom-3hourlyWeather-hourInfo">
+            			<div id="bottom-3hourlyWeather-hourInfo-box">
+            			
+            				<div id="bottom-3hourlyWeather-time">
+            					<b> 12am-3am </b>
+            				</div>
+            				
+            				<div id="bottom-3hourlyWeather-tempAndIcon">
+            					<div id="bottom-3hourlyWeather-temp">
+            						Temp
+            					</div>
+            					<div id="bottom-3hourlyWeather-iconAndDisc">
+            						<div id="bottom-3hourlyWeather-icon">
+            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
+            						</div>
+            						<div id="bottom-3hourlyWeather-iconDisc">
+            							Rainy
+            						</div>
+            					</div>
+            				</div>
+            				
+		            		<div id="bottom-3hourlyWeather-highLow">
+		            				High - Low
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-weatherDisc">
+		            				Light Rain
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-downfall">
+		            				.2in Rain
+		            		</div>	
+            			</div>
+            		</div>
+            	</div>
+            	
+            	
+            	
+            	<div id="bottom-3hourlyWeather2">
+            		<div id="bottom-3hourlyWeather-hourInfo">
+            			<div id="bottom-3hourlyWeather-hourInfo-box">
+            			
+            				<div id="bottom-3hourlyWeather-time">
+            					<b> 12am-3am </b>
+            				</div>
+            				
+            				<div id="bottom-3hourlyWeather-tempAndIcon">
+            					<div id="bottom-3hourlyWeather-temp">
+            						Temp
+            					</div>
+            					<div id="bottom-3hourlyWeather-iconAndDisc">
+            						<div id="bottom-3hourlyWeather-icon">
+            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
+            						</div>
+            						<div id="bottom-3hourlyWeather-iconDisc">
+            							Rainy
+            						</div>
+            					</div>
+            				</div>
+            				
+		            		<div id="bottom-3hourlyWeather-highLow">
+		            				High - Low
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-weatherDisc">
+		            				Light Rain
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-downfall">
+		            				.2in Rain
+		            		</div>	
+            			</div>
+            		</div>
+            		<div id="bottom-3hourlyWeather-hourInfo">
+            			<div id="bottom-3hourlyWeather-hourInfo-box">
+            			
+            				<div id="bottom-3hourlyWeather-time">
+            					<b> 12am-3am </b>
+            				</div>
+            				
+            				<div id="bottom-3hourlyWeather-tempAndIcon">
+            					<div id="bottom-3hourlyWeather-temp">
+            						Temp
+            					</div>
+            					<div id="bottom-3hourlyWeather-iconAndDisc">
+            						<div id="bottom-3hourlyWeather-icon">
+            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
+            						</div>
+            						<div id="bottom-3hourlyWeather-iconDisc">
+            							Rainy
+            						</div>
+            					</div>
+            				</div>
+            				
+		            		<div id="bottom-3hourlyWeather-highLow">
+		            				High - Low
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-weatherDisc">
+		            				Light Rain
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-downfall">
+		            				.2in Rain
+		            		</div>	
+            			</div>
+            		</div>
+            		<div id="bottom-3hourlyWeather-hourInfo">
+            			<div id="bottom-3hourlyWeather-hourInfo-box">
+            			
+            				<div id="bottom-3hourlyWeather-time">
+            					<b> 12am-3am </b>
+            				</div>
+            				
+            				<div id="bottom-3hourlyWeather-tempAndIcon">
+            					<div id="bottom-3hourlyWeather-temp">
+            						Temp
+            					</div>
+            					<div id="bottom-3hourlyWeather-iconAndDisc">
+            						<div id="bottom-3hourlyWeather-icon">
+            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
+            						</div>
+            						<div id="bottom-3hourlyWeather-iconDisc">
+            							Rainy
+            						</div>
+            					</div>
+            				</div>
+            				
+		            		<div id="bottom-3hourlyWeather-highLow">
+		            				High - Low
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-weatherDisc">
+		            				Light Rain
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-downfall">
+		            				.2in Rain
+		            		</div>	
+            			</div>
+            		</div>
+            		<div id="bottom-3hourlyWeather-hourInfo">
+            			<div id="bottom-3hourlyWeather-hourInfo-box">
+            			
+            				<div id="bottom-3hourlyWeather-time">
+            					<b> 12am-3am </b>
+            				</div>
+            				
+            				<div id="bottom-3hourlyWeather-tempAndIcon">
+            					<div id="bottom-3hourlyWeather-temp">
+            						Temp
+            					</div>
+            					<div id="bottom-3hourlyWeather-iconAndDisc">
+            						<div id="bottom-3hourlyWeather-icon">
+            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
+            						</div>
+            						<div id="bottom-3hourlyWeather-iconDisc">
+            							Rainy
+            						</div>
+            					</div>
+            				</div>
+            				
+		            		<div id="bottom-3hourlyWeather-highLow">
+		            				High - Low
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-weatherDisc">
+		            				Light Rain
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-downfall">
+		            				.2in Rain
+		            		</div>	
+            			</div>
+            		</div>
+            	</div>
+            	
+            	<div id="advancedInfo">
+            		<div id="advancedInfo-Title">^ Advanced Info</div>
+            		<div id="advancedInfo-hiddenContent">
+            			<span id="hiddenContent-tempGraph-Title">Today's Temperature Graph (&#176;F)</span>
+						<div id="graph-container">
+						  <canvas id="temp-graph"></canvas>
+						</div>
+						<div id="hiddenContent-tempValuesDiv">
+							<div id="hiddenContent-avgTempValues1">20&#176;</div>
+							<div id="hiddenContent-avgTempValues2">22&#176;</div>
+							<div id="hiddenContent-avgTempValues3">24&#176;</div>
+							<div id="hiddenContent-avgTempValues4">25&#176;</div>
+							<div id="hiddenContent-avgTempValues5">26&#176;</div>
+							<div id="hiddenContent-avgTempValues6">24&#176;</div>
+							<div id="hiddenContent-avgTempValues7">22&#176;</div>
+							<div id="hiddenContent-avgTempValues8">20&#176;</div>
+						</div>
+						
+						<div id="hiddenContent-otherInfo">
+							<div id="hiddenContent-otherInfo-col1">
+								<div id="hiddenContent-otherInfo-col1-info">
+									Real Feel: 54&#176;F <br>
+									Wind  <br>
+									Other...
+									                  
+			                	</div>
+			                	
+			                </div>
+			                <div id="hiddenContent-otherInfo-col2">
+			                	<div id="hiddenContent-otherInfo-col2-info">
+									Real Feel: 54&#176;F <br>
+									Wind  <br>
+									Other...
+									                  
+			                	</div>
+	                	
+	                
+	                		</div>
+						</div>
+						
+						        		
+            		</div>
+            	</div>
+            	
+            	
+            	
+	            <div id="openWeatherLogoAndSocialLinks">
+	                <div id="openWeatherLogoText">
+	                    <i>Powered by</i> 
+	                    <a href="https://openweathermap.org/" target="_blank">
+	                        <img id="openWeatherLogoImage" src="/images/openWeatherLogo.png">
+	                    </a>
+	                </div>
+	                <div id="socialLinks">
+	                	<b> <a href="https://github.com/Nathan-Barthen" target="_blank">GitHub</a> <br>
+	                	    <a href="https://www.linkedin.com/in/nathan-barthen-22993722a/" target="_blank">LinkedIn</a> </b>
+	                </div>
+	            </div>
+            
+            </div>
+            
+           
+        
+            
+        </div>    
+    </div>
+	
+	
+	
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="/javaScript/advancedInfo-Popup.js"></script>
+	<script src="/javaScript/advandedInfo-Graph.js"></script>
+	<script src="/javaScript/clicks-Tomorrow.js"></script>
+	<script src="/javaScript/clicks-5DayForeCast.js"></script>
+	
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
