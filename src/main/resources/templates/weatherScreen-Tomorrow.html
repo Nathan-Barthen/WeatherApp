@@ -6,7 +6,7 @@
         initial-scale=1">
 <title>Weather App</title>
 
-<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-top.css">
+<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-Tomorrow-top.css">
 <link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-bottom.css">
 <link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-advancedInfo.css">
 <link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-links.css">
@@ -23,7 +23,7 @@
             <div id="top">
             	<div id="top-search">
                     <form>
-                        <input type="text" placeholder="Enter ZIP or Town">
+                        <input type="text" placeholder="ZIP or City (Dallas, TX)">
                     </form>
                 </div>
                 
@@ -33,7 +33,7 @@
 	                    	Location
 		                </div>
 		                <div id="top-time">
-		                    Time
+		                    Tomorrow
 		                </div>
 		                <div id="top-date">
 		                    Date (TMRW)
@@ -41,10 +41,12 @@
 		            </div>
 		            
 		            <div id="top-column2">
-	                	<div id="top-temp">
-	                    	60&#176;F
+	                	<div id="top-avgTemp">
+	                    	60<span id="degreesSymbol">&#176;</span>F
 		                </div>
-		                
+		                <div id="top-highLowTemp">
+	                    	71 - 49 <span id="degreesSymbol">&#176;</span>F
+		                </div> 
 		            </div>
 		            
 		            <div id="top-column3">
@@ -377,7 +379,7 @@
             	<div id="advancedInfo">
             		<div id="advancedInfo-Title">^ Advanced Info</div>
             		<div id="advancedInfo-hiddenContent">
-            			<span id="hiddenContent-tempGraph-Title">Today's Temperature Graph (&#176;F)</span>
+            			<span id="hiddenContent-tempGraph-Title">Tomorrow's Temperature Graph (&#176;F)</span>
 						<div id="graph-container">
 						  <canvas id="temp-graph"></canvas>
 						</div>

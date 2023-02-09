@@ -41,7 +41,7 @@ html, body {
     
     
     /* START TOP STYLES */
-    #top {
+     #top {
         background-color: rgb(0, 32, 128);
         position: relative;
         width: 100%;
@@ -97,8 +97,8 @@ html, body {
     	height: 100%;
 	    align-items: center;
 	    text-align: center;
-	    
     }
+   
     
     /* Column1 */
     #top-location {
@@ -110,39 +110,55 @@ html, body {
         white-space: nowrap;
     }
     #top-time {
-    	padding-top: 10px;
-        width: 100%;
+    	width: 100%;
         padding-left: 5%;
-        padding-top: 20%;
         font-size: 65px;
-        white-space: nowrap;
         color: rgb(230, 184, 0);
+        padding-top: 20%;
     }
     #top-date {
         width: 100%;
+        
         padding-left: 5%;
         font-size: 65px;
         white-space: nowrap;
+        display: flex;
+        align-items: end; 
+        white-space: nowrap;
+        
     }
     
     /* Column2 */
-    #top-temp {
+    #top-avgTemp {
+    	padding-top: 15%;
     	position: relative;
-    	height: 100%;
-    	width: 100%;
     	display: flex;
 	    align-items: center;
 	    text-align: center;
-    	font-size: 180px;
-    	left: -25%;
+	    justify-content: center;
+    	font-size: 140px;
     	-webkit-text-stroke:5px black;
   		-webkit-text-fill-color:white;
     }
-    #degreesSymbol {
+   #top-highLowTemp {
+   		position: relative;
+    	display: flex;
+	    align-items: center;
+	    text-align: center;
+	    justify-content: center;
+    	font-size: 70px;
+   		font-style: italic;
+   		color: rgb(179, 179, 179);
+   		-webkit-text-stroke:3px black;
+  		-webkit-text-fill-color:rgb(179, 179, 179);
+  		white-space: nowrap;
+   }
+   #degreesSymbol {
    		color: white;
    		-webkit-text-stroke:2px white;
   		-webkit-text-fill-color:white;
    }
+   
    /* Column3 */
    #top-imageDiv {
 	  display: flex;
@@ -178,8 +194,6 @@ html, body {
 		text-overflow: ellipsis;
 		font-size: 30px;
    }
-   
-   
    /* END COLUMN STYLES */
    /* START TODAY | TOMORROR | 5 DAY FORECAST */
    

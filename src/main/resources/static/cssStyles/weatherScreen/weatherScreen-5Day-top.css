@@ -85,20 +85,15 @@ html, body {
     
     #top-column1 {
     	width: 40%;
+    	height: 100%;
+    	position: relative;
     }
     
     #top-column2 {
-    	width: 30%;
-    }
-    
-    #top-column3 {
-    	width: 20%;
-    	position: relative;
+    	width: 50%;
     	height: 100%;
-	    align-items: center;
-	    text-align: center;
-	    
     }
+   
     
     /* Column1 */
     #top-location {
@@ -110,76 +105,54 @@ html, body {
         white-space: nowrap;
     }
     #top-time {
-    	padding-top: 10px;
-        width: 100%;
+    	width: 100%;
         padding-left: 5%;
-        padding-top: 20%;
         font-size: 65px;
         white-space: nowrap;
+        padding-top: 20%;
         color: rgb(230, 184, 0);
     }
     #top-date {
         width: 100%;
+        
         padding-left: 5%;
         font-size: 65px;
         white-space: nowrap;
+        display: flex;
+        align-items: end; 
+        white-space: nowrap;
+        
     }
     
     /* Column2 */
-    #top-temp {
+    #top-avgTemp {
     	position: relative;
-    	height: 100%;
-    	width: 100%;
     	display: flex;
 	    align-items: center;
 	    text-align: center;
-    	font-size: 180px;
-    	left: -25%;
+	    justify-content: center;
+    	font-size: 140px;
     	-webkit-text-stroke:5px black;
   		-webkit-text-fill-color:white;
     }
-    #degreesSymbol {
+   #top-highLowTemp {
+   		position: relative;
+    	display: flex;
+	    align-items: center;
+	    text-align: center;
+	    justify-content: center;
+    	font-size: 90px;
+   		font-style: italic;
+   		color: rgb(179, 179, 179);
+   		-webkit-text-stroke:5px black;
+  		-webkit-text-fill-color:rgb(179, 179, 179);
+  		white-space: nowrap;
+   }
+   #degreesSymbol {
    		color: white;
    		-webkit-text-stroke:2px white;
   		-webkit-text-fill-color:white;
    }
-   /* Column3 */
-   #top-imageDiv {
-	  display: flex;
-	  height: 65%;
-      align-items: flex-end; /* aligns items vertically at the bottom */
-      justify-content: center; /* aligns items horizontally in the middle */
-
-   }
-   #top-currentWeatherImg {
-   	  height: 300px;
-	  width: 300px;
-	  
-	  position: absolute;
-	  bottom: 22%;
-   }
-   #top-imageDisc {
-	   	height: 20%;
-	   	display: flex;
-	  	align-items: flex-start; 
-	  	justify-content: center;
-	   	z-index: 2;
-	   	font-size: 60px;
-   }
-    #top-imageDisc2 {
-	   	height: 15%;
-	   	max-width: 100%;
-	   	display: flex;
-	  	align-items: flex-start; 
-	  	justify-content: center;
-	   	z-index: 2;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		font-size: 30px;
-   }
-   
-   
    /* END COLUMN STYLES */
    /* START TODAY | TOMORROR | 5 DAY FORECAST */
    
