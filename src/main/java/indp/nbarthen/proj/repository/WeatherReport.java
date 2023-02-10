@@ -1,5 +1,6 @@
 package indp.nbarthen.proj.repository;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,18 +16,16 @@ public class WeatherReport {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	private String location;
 	private String lon;
 	private String lat;
 	private String units;
 	private String city;
-	private String zip;
-	private String country;
-	private String stateAbrivation;
+	private String country;  	//Currently only works for US.
+	private String state;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private TodayReport today;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private TomorrowReport tomorrow;
 	
 	private String apiError;
@@ -46,13 +45,6 @@ public class WeatherReport {
 	}
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation(String location) {
-		this.location = location;
 	}
 
 	public String getLon() {
@@ -83,12 +75,6 @@ public class WeatherReport {
 		this.city = city;
 	}
 
-	public String getZip() {
-		return zip;
-	}
-	public void setZip(String zip) {
-		this.zip = zip;
-	}
 
 	public String getCountry() {
 		return country;
@@ -97,11 +83,11 @@ public class WeatherReport {
 		this.country = country;
 	}
 
-	public String getStateAbrivation() {
-		return stateAbrivation;
+	public String getState() {
+		return state;
 	}
-	public void setStateAbrivation(String stateAbrivation) {
-		this.stateAbrivation = stateAbrivation;
+	public void setState(String state) {
+		this.state = state;
 	}
 
 

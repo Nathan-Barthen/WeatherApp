@@ -39,12 +39,104 @@ public class TriHourlyReport {
 		
 	}
 
-
+	
+	
+	//Getters / Setters
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+
+
+
+	public double getTemp() {
+		return temp;
+	}
+
+	public void setTemp(double temp) {
+		this.temp = temp;
+	}
+
+	public double getHighTemp() {
+		return highTemp;
+	}
+
+	public void setHighTemp(double highTemp) {
+		this.highTemp = highTemp;
+	}
+
+	public double getLowTemp() {
+		return lowTemp;
+	}
+
+	public void setLowTemp(double lowTemp) {
+		this.lowTemp = lowTemp;
+	}
+
+	public double getFeelsLikeTemp() {
+		return feelsLikeTemp;
+	}
+
+	public void setFeelsLikeTemp(double feelsLikeTemp) {
+		this.feelsLikeTemp = feelsLikeTemp;
+	}
+
+	public int getWeatherId() {
+		return weatherId;
+	}
+
+	public void setWeatherId(int weatherId) {
+		this.weatherId = weatherId;
+	}
+
+	public String getWeatherMain() {
+		return weatherMain;
+	}
+
+	public void setWeatherMain(String weatherMain) {
+		this.weatherMain = weatherMain;
+	}
+
+	public String getWeatherDesc() {
+		return weatherDesc;
+	}
+
+	public void setWeatherDesc(String weatherDesc) {
+		this.weatherDesc = weatherDesc;
+	}
+
+	public String getWeatherIconId() {
+		return weatherIconId;
+	}
+
+	public void setWeatherIconId(String weatherIconId) {
+		this.weatherIconId = weatherIconId;
+	}
+
+	public String getDownfallType() {
+		return downfallType;
+	}
+
+	public void setDownfallType(String downfallType) {
+		this.downfallType = downfallType;
+	}
+
+	public double getDownfallTotalAmount() {
+		return downfallTotalAmount;
+	}
+
+	public void setDownfallTotalAmount(double downfallTotalAmount) {
+		this.downfallTotalAmount = downfallTotalAmount;
+	}
+
+	public int getTime() {
+		return time;
+	}
+
+	public void setTime(int time) {
+		this.time = time;
 	}
 
 	
