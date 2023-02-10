@@ -76,7 +76,7 @@ public class GetLonLat {
 			else {
 				geocodingApiCallUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + city + "," + stateAbriv + "," + countryCode + "&limit=1" + "&appid=" + apiKey;
 			}
-			// http://api.openweathermap.org/geo/1.0/direct?q=Franklin,PA,US&limit=1&appid=ea8640d76f9d8fd822ec05c4b5bceaed
+			
 			
 			//Make API Call / Get JSON response
 			RestTemplate  weatherReportRestTemplate = new RestTemplate();
