@@ -1,9 +1,11 @@
 package indp.nbarthen.proj.repository;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 import java.util.List;
@@ -42,17 +44,20 @@ public class TomorrowReport {
 	
 	private int cityPopulation;
 	
-	@OneToOne
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<TriHourlyReport> triHourlyReports;
 	
 	
 	private String apiError;
 	
+	//Constructor
 	public TomorrowReport(){
 		triHourlyReports = new Vector<TriHourlyReport>();
 	}
 
-
+	
+	
+	//Getters / Setters
 	public long getId() {
 		return id;
 	}
@@ -60,8 +65,144 @@ public class TomorrowReport {
 		this.id = id;
 	}
 
-	
+	public int getAvgWeatherId() {
+		return avgWeatherId;
+	}
 
+
+	public void setAvgWeatherId(int avgWeatherId) {
+		this.avgWeatherId = avgWeatherId;
+	}
+
+
+	public String getAvgWeatherMain() {
+		return avgWeatherMain;
+	}
+
+
+	public void setAvgWeatherMain(String avgWeatherMain) {
+		this.avgWeatherMain = avgWeatherMain;
+	}
+
+
+	public String getAvgWeatherDesc() {
+		return avgWeatherDesc;
+	}
+
+
+	public void setAvgWeatherDesc(String avgWeatherDesc) {
+		this.avgWeatherDesc = avgWeatherDesc;
+	}
+
+
+	public String getAvgWeatherIconId() {
+		return avgWeatherIconId;
+	}
+
+
+	public void setAvgWeatherIconId(String avgWeatherIconId) {
+		this.avgWeatherIconId = avgWeatherIconId;
+	}
+
+
+	public double getAvgTemp() {
+		return avgTemp;
+	}
+
+
+	public void setAvgTemp(double avgTemp) {
+		this.avgTemp = avgTemp;
+	}
+
+
+	public double getHighTemp() {
+		return highTemp;
+	}
+
+
+	public void setHighTemp(double highTemp) {
+		this.highTemp = highTemp;
+	}
+
+
+	public double getLowTemp() {
+		return lowTemp;
+	}
+
+
+	public void setLowTemp(double lowTemp) {
+		this.lowTemp = lowTemp;
+	}
+
+
+	public String getDownfallType() {
+		return downfallType;
+	}
+
+
+	public void setDownfallType(String downfallType) {
+		this.downfallType = downfallType;
+	}
+
+
+	public double getDownfallTotalAmount() {
+		return downfallTotalAmount;
+	}
+
+
+	public void setDownfallTotalAmount(double downfallTotalAmount) {
+		this.downfallTotalAmount = downfallTotalAmount;
+	}
+
+
+	public int getSunrise() {
+		return sunrise;
+	}
+
+
+	public void setSunrise(int sunrise) {
+		this.sunrise = sunrise;
+	}
+
+
+	public int getSunset() {
+		return sunset;
+	}
+
+
+	public void setSunset(int sunset) {
+		this.sunset = sunset;
+	}
+
+
+	public int getTimezone() {
+		return timezone;
+	}
+
+
+	public void setTimezone(int timezone) {
+		this.timezone = timezone;
+	}
+
+
+	public int getCityPopulation() {
+		return cityPopulation;
+	}
+
+
+	public void setCityPopulation(int cityPopulation) {
+		this.cityPopulation = cityPopulation;
+	}
+
+
+	public List<TriHourlyReport> getTriHourlyReports() {
+		return triHourlyReports;
+	}
+
+
+	public void setTriHourlyReports(List<TriHourlyReport> triHourlyReports) {
+		this.triHourlyReports = triHourlyReports;
+	}
 
 
 		public String getApiError() {
