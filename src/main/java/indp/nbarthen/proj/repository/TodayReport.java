@@ -6,7 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
+import java.util.Date;
 import java.util.Vector;
+
+import com.ibm.icu.text.SimpleDateFormat;
 
 /*
  * Today:
@@ -33,7 +36,7 @@ public class TodayReport {
 	private String downfallType; 	//Optional: Ex. 'Rain' 'Snow;
 	private double downfallAmount; 	//Optional: Ex. ' "1h": 3.16 ' Could be '1h' or '3h'
 	
-	private double windSpeed;
+	private double windSpeed;		// m/s (meters per second)
 	private int cloudiness; 		// as a % (0-100)
 	
 	private int sunrise; 			// time, unix, UTC
@@ -102,8 +105,9 @@ public class TodayReport {
 	}
 
 
-	public double getCurrTemp() {
-		return currTemp;
+	public int getCurrTemp() {
+		//Rounded to a whole number
+		return (int) Math.round(currTemp);
 	}
 
 
@@ -112,8 +116,9 @@ public class TodayReport {
 	}
 
 
-	public double getCurrFeelsLike() {
-		return currFeelsLike;
+	public int getCurrFeelsLike() {
+		//Rounded to a whole number
+		return (int) Math.round(currFeelsLike);
 	}
 
 
@@ -153,7 +158,9 @@ public class TodayReport {
 
 
 	public double getWindSpeed() {
-		return windSpeed;
+		//Converted to m/s to mph (rounded to first decimal)
+		double mphWindSpeed = windSpeed * 2.237;
+		return Math.round(mphWindSpeed * 10) / 10.0;
 	}
 
 
@@ -172,8 +179,11 @@ public class TodayReport {
 	}
 
 
-	public int getSunrise() {
-		return sunrise;
+	public String getSunrise() {
+		//Converts Sunrise to local time (ex. 6:21am)
+		SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+		 
+		return timeFormat.format(sunrise+timezone).toLowerCase();
 	}
 
 

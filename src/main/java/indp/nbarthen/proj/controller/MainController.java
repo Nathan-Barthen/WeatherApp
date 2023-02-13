@@ -45,10 +45,12 @@ public class MainController {
 	 @RequestMapping({"/"})
 	    public String homePage(Model model) {
 		 
-		 SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+		 	//Get current time & date
+		 	SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+		 	SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
 		 	Date today = new Date();
 		 	Date date = new Date();
-		 	SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+		 	
 		 	
 		 	//User was redirected to home from API call error.
 		 	if(!userSearchPopupError.equals("none")) {
@@ -63,10 +65,9 @@ public class MainController {
 		 	
 		 	//Default value for userSearchPopupError is 'none' (no error will popup)
 		 	model.addAttribute("popupError", userSearchPopupError);
-		 	
-		 	
-		 	model.addAttribute("currentDate", dateFormat.format(today));
 		 	model.addAttribute("currentTime", timeFormat.format(date).toLowerCase());
+		 	model.addAttribute("currentDate", dateFormat.format(today));
+		 	
 		 	
 	        return "homePage";
 	    }
@@ -75,28 +76,69 @@ public class MainController {
 	    public String getInputLocation(@PathVariable("userInput") String userInput, Model model) throws JsonMappingException, JsonProcessingException {
 		 	WeatherReport report = new WeatherReport();
 		 	
-		 	//Gets basic info using Geocoder API to make future API calls (lon, lat)
-		 	report = GetLonLat.todaysWeatherReport(report, userInput);
-		 	//Gets the current weather Info
-		 	report = GetTodaysWeather.todaysWeatherReport(report);
-		 	
-		 	//If API call returned an error
-		 	if(!report.getApiError().isEmpty()) {
-		 		//Get API error message and return to homePage.html
-		 		userSearchPopupError = report.getApiError();
-		 		return "redirect:/";
+		 	//User passed a ZIP
+		 	if(HandleUserInput.checkForZip(userInput)) {
+		 		report = GetLonLat.todaysWeatherReportUsingZip(report, userInput);
+		 		//Gets the current weather Info
+			 	report = GetTodaysWeather.todaysWeatherReport(report);
+			 	
+			 	//If API call returned an error
+			 	if(!report.getApiError().isEmpty()) {
+			 		//Get API error message and return to homePage.html
+			 		userSearchPopupError = report.getApiError();
+			 		return "redirect:/";
+			 	}
+			 	
+			 	weatherRepository.save(report);
+			 	
+			 	return "redirect:/weatherReport/" + report.getId() + "/" + report.getCity() + "/today";
 		 	}
 		 	
-		 	weatherRepository.save(report);
-		 	return "redirect:/weatherReport/" + report.getId() + "/" + report.getCity() + "/today";
+		 	
+		 	//City+State was entered
+		 	else {
+		 		//Gets basic info using Geocoder API to make future API calls (lon, lat)
+			 	report = GetLonLat.todaysWeatherReportUsingCityState(report, userInput);
+			 	
+			 	//If API call returned an error
+			 	if(!report.getApiError().isEmpty()) {
+			 		//Get API error message and return to homePage.html
+			 		userSearchPopupError = report.getApiError();
+			 		return "redirect:/";
+			 	}
+			 	
+			 	weatherRepository.save(report);
+			 	
+			 	return "redirect:/weatherReport/" + report.getId() + "/chooseLocation";
+		 	}	 	
+	    }
+	 
+	 
+	 
+	 @RequestMapping({"weatherReport/{id}/chooseLocation"})
+	    public String chooseCorrectLocation(@PathVariable("id") String id, Model model) throws JsonMappingException, JsonProcessingException {
+		 	 WeatherReport report = weatherRepository.findById(id).get();
+			 model.addAttribute("report", report);
+		 	
+	        return "chooseCorrectLocation";
 	    }
 	 
 	 @RequestMapping({"weatherReport/{id}/{location}/today"})
 	    public String getTodaysReport(@PathVariable("id") String id, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
 		 	 WeatherReport report = weatherRepository.findById(id).get();
 		 	 
-		 	 
-		 	 
+		 	//Get current time & date
+			 SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+			 SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+			 Date today = new Date();
+			 Date date = new Date();
+			 
+			 
+			 	
+			 model.addAttribute("report", report);
+			 model.addAttribute("today", report.getToday());
+			 model.addAttribute("currentTime", timeFormat.format(date).toLowerCase());
+			 model.addAttribute("currentDate", dateFormat.format(today));
 		 	
 	        return "weatherScreen-Today";
 	    }

@@ -30,32 +30,32 @@
                 <div id="top-columns">
                 	<div id="top-column1">
 	                	<div id="top-location">
-	                    	Location
+	                    	[[${report.getCity()}]]
 		                </div>
 		                <div id="top-time">
-		                    Time
+		                    [[${currentTime}]]
 		                </div>
 		                <div id="top-date">
-		                    Date
+		                    [[${currentDate}]]
 		                </div>
 		            </div>
 		            
 		            <div id="top-column2">
 	                	<div id="top-temp">
-	                    	60<span id="degreesSymbol">&#176;</span>F
+	                    	[[${today.getCurrTemp()}]]<span id="degreesSymbol">&#176;</span>F
 		                </div>
 		                
 		            </div>
 		            
 		            <div id="top-column3">
 	                	<div id="top-imageDiv">
-	                    	<img id="top-currentWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
+	                    	<img id="top-currentWeatherImg" th:src="@{'http://openweathermap.org/img/wn/' + ${today.getWeatherIconId()} + '@2x.png'}"/>
 		                </div>
 		                <div id="top-imageDisc">
-	                    	Sunny
+	                    	[[${today.getWeatherMain()}]]
 		                </div>
 		                <div id="top-imageDisc2">
-	                    	<i>(Expect Sun)</i>
+	                    	<i>([[${today.getWeatherDesc()}]])</i>
 		                </div>
 		                
 		            </div>
@@ -80,13 +80,13 @@
             	<div id="bottom-currentWeatherInfo">
             	
 	                <div id="bottom-currentWeatherInfo-col1">
-	                	<span id="bottom-currentWeatherInfo-col1-title"> <b>Info for 10:21pm:</b> </span>
+	                	<span id="bottom-currentWeatherInfo-col1-title"> <b>[[${currentTime}]]</b> </span>
 						<div id="bottom-currentWeatherInfo-col1-info">
-							Real Feel: 54&#176;F                  
+							Real Feel: [[${today.getCurrFeelsLike()}]]&#176;F                  
 	                	</div>
 	                	<div id="bottom-currentWeatherInfo-col1-sunset">
-							Sunrise: 7:21am <br>
-							Sunset: 6:37pm
+							Sunrise: [[${today.getSunrise()}]] <br>
+							Sunset: [[${today.getSunset()}]]
 	                	</div>
 	                	
 	                </div>
@@ -98,9 +98,13 @@
 		                	</div>
 	                	</div>
 	                	<div id="bottom-currentWeatherInfo-col2-info">
-							sdsdfsdfsdfsdfm <br>
-							sdfsdfsdfsdfsdf ghghgh <br> 
-							ghghgh
+							Cloudiness: [[${today.getCloudiness()}]]% <br>
+							Wind speed: [[${today.getWindSpeed()}]] mph<br> 
+							[[${today.getDownfallType()}]] <br>
+							<th:block th:if="${today.getDownfallAmount() != 0}">
+							    [[${today.getDownfallAmount()}]] <br>
+							</th:block>
+
 	                	</div>
 	                </div>
 	                
