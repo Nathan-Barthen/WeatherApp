@@ -5,8 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
+import java.util.List;
 import java.util.Vector;
 
 @Entity
@@ -22,6 +24,9 @@ public class WeatherReport {
 	private String city;
 	private String country;  	//Currently only works for US.
 	private String state;
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Location> locations;  //User searched by City+State (returns multiple locations, user chooses which is correct)
+	
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private TodayReport today;
@@ -31,8 +36,9 @@ public class WeatherReport {
 	private String apiError;
 	
 	public WeatherReport(){
-		units = "imperial"; 	//Default (Fahrenheit)   Celsius = metric
+		units = "imperial"; 	//imerial (Fahrenheit)   Celsius = metric
 		country = "US"; 		//Current default US
+		locations = new Vector<Location>();
 		today = new TodayReport();
 		tomorrow = new TomorrowReport();
 		
@@ -90,6 +96,17 @@ public class WeatherReport {
 		this.state = state;
 	}
 
+
+	
+	
+	public List<Location> getLocations() {
+		return locations;
+	}
+
+
+	public void setLocations(List<Location> locations) {
+		this.locations = locations;
+	}
 
 
 	public TodayReport getToday() {
