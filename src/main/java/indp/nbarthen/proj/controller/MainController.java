@@ -4,6 +4,7 @@ package indp.nbarthen.proj.controller;
 import indp.nbarthen.proj.apicontrolls.*;
 import indp.nbarthen.proj.repository.WeatherReport;
 import indp.nbarthen.proj.repository.WeatherRepository;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.IOException;
 import java.util.*;
@@ -79,8 +80,6 @@ public class MainController {
 		 	//User passed a ZIP
 		 	if(HandleUserInput.checkForZip(userInput)) {
 		 		report = GetLonLat.todaysWeatherReportUsingZip(report, userInput);
-		 		//Gets the current weather Info
-			 	report = GetTodaysWeather.todaysWeatherReport(report);
 			 	
 			 	//If API call returned an error
 			 	if(!report.getApiError().isEmpty()) {
@@ -90,8 +89,7 @@ public class MainController {
 			 	}
 			 	
 			 	weatherRepository.save(report);
-			 	
-			 	return "redirect:/weatherReport/" + report.getId() + "/" + report.getCity() + "/today";
+			 	return "redirect:/weatherReport/" + report.getId() + "/" + ((report.getLocations().size())-1) + "/" + report.getCity() + "/today";
 		 	}
 		 	
 		 	
@@ -123,19 +121,25 @@ public class MainController {
 	        return "chooseCorrectLocation";
 	    }
 	 
-	 @RequestMapping({"weatherReport/{id}/{location}/today"})
-	    public String getTodaysReport(@PathVariable("id") String id, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
+	 @RequestMapping({"weatherReport/{id}/{locationIndex}/{location}/today"})
+	    public String getTodaysReport(@PathVariable("id") String id, @PathVariable("locationIndex") String locationIndex, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
 		 	 WeatherReport report = weatherRepository.findById(id).get();
 		 	 
+		 	 //Get apiKey
+		 	Dotenv dotenv = Dotenv.load();
+			String apiKey = dotenv.get("API_KEY");	
 		 	//Get current time & date
 			 SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
 			 SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
 			 Date today = new Date();
 			 Date date = new Date();
 			 
-			 
+			//Gets the current weather Info
+			 report = GetTodaysWeather.todaysWeatherReport(report, Integer.parseInt(locationIndex));
 			 	
 			 model.addAttribute("report", report);
+			 model.addAttribute("locationIndex", locationIndex);
+			 model.addAttribute("apiKey", apiKey);
 			 model.addAttribute("today", report.getToday());
 			 model.addAttribute("currentTime", timeFormat.format(date).toLowerCase());
 			 model.addAttribute("currentDate", dateFormat.format(today));

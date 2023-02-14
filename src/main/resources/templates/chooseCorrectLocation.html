@@ -24,8 +24,20 @@
                     Select Your City
                 </div>
                 <div id="top-locations">
-                    <div th:each="location : ${report.getLocations()}" id="top-location">
-                    	[[${location.getCity()}]] &nbsp; Lon: [[${location.getLon()}]] &nbsp; Lat: [[${location.getLat()}]] &nbsp; State: [[${location.getStateAbriv()}]] 
+                    <div th:each="location, iterStat : ${report.getLocations()}" id="top-location">
+                    	<div id="top-locationContainer">
+                    		<div id="selectCity">
+		                    	<form method="post" th:action="@{/weatherReport/__${report.getId()}__/__${iterStat.index}__/__${location.getCity()}__/today}">
+		                            <input type="submit" value="Select" />
+		                        </form>
+		                    </div>
+		                    <div id="iconImgDiv"> <img id="iconImg" src="" alt="Icon"> </div>
+                    		<div id="city"> [[${location.getCity()}]] 					</div>
+                    		<div id="lon"> Lon: [[${location.getDoubleLon()}]] 			</div>
+                    		<div id="lat"> Lat: [[${location.getDoubleLat()}]]			</div>
+                    		<div id="state"> State: [[${location.getStateAbriv()}]] 	</div>
+              
+                		</div>
                 	</div>
                 </div>
                 
@@ -43,7 +55,8 @@
             
             <div id="bottom">
             
-            	<div id="mapid" style="height: 600px; width: 100%;"></div>
+            	<div id="bottom-space"></div>
+            	<div id="mapid"></div>
             
             
             
@@ -72,14 +85,15 @@
 	<script src="/javaScript/entersLocation.js"></script>
 	<script src="/javaScript/errorRedirectPopup.js"></script>
 	
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-   		integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-   		crossorigin=""/>
-	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-   		integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-   		crossorigin=""></script>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+	<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+	<script src="https://cdn.jsdelivr.net/npm/leaflet.label@1.0.0/dist/leaflet.label.js"></script>
+	
+
 	
 	<script src="/javaScript/leafletMap-CityLocations.js"></script>
+	
+	
 	
 </body>
 </html>

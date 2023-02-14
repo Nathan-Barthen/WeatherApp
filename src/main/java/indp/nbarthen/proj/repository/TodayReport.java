@@ -183,7 +183,7 @@ public class TodayReport {
 		//Converts Sunrise to local time (ex. 6:21am)
 		SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
 		 
-		return timeFormat.format(sunrise+timezone).toLowerCase();
+		return timeFormat.format(sunrise).toLowerCase();
 	}
 
 

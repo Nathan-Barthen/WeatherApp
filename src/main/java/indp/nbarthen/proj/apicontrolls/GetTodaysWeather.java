@@ -16,13 +16,16 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class GetTodaysWeather {
 	
 	
-	public static WeatherReport todaysWeatherReport(WeatherReport report) {
+	public static WeatherReport todaysWeatherReport(WeatherReport report, int locationIndex) {
 		
 		try {
 			Dotenv dotenv = Dotenv.load();
 			String apiKey = dotenv.get("API_KEY");		
 			
-			String geocodingApiCallUrl = "https://api.openweathermap.org/data/2.5/weather?lat="+report.getLat()+"&lon="+report.getLon()+"&appid=" + apiKey + "&units=" + report.getUnits();
+			//If OpenWeather response returned multiple locations. Access lon lat location selected by the user.
+			String lon = report.getLocations().get(locationIndex).getLon();
+			String lat = report.getLocations().get(locationIndex).getLat();
+			String geocodingApiCallUrl = "https://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lon+"&appid=" + apiKey + "&units=" + report.getUnits();
 			
 			//Make API Call / Get JSON response
 			RestTemplate  weatherReportRestTemplate = new RestTemplate();
@@ -58,9 +61,12 @@ public class GetTodaysWeather {
 			todayReport.setTime(weatherReportRoot.path("dt").asInt());
 			todayReport.setTimezone(weatherReportRoot.path("timezone").asInt());
 			
-			////Save sunrise/sunset related Data.
+			//Save sunrise/sunset related Data.
 			todayReport.setSunrise(weatherReportRoot.path("sys").path("sunrise").asInt());
 			todayReport.setSunset(weatherReportRoot.path("sys").path("sunset").asInt());
+			//Save City
+			report.setCity(weatherReportRoot.path("name").asText());
+			
 			
 			//Returned JSON contains Rain precipitation data
 			if( !weatherReportRoot.path("rain").isEmpty() ){

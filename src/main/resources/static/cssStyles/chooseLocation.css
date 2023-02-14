@@ -61,11 +61,55 @@ html, body {
         font-size: 30px;
         
     }
+    
+    
     #top-location {
     	padding-top: 10px;
-        
-        
     }
+    #top-locationContainer {
+    	width: 90%;
+    	display: flex;
+    	justify-content: space-between; /* evenly space the divs */
+    }
+    #selectCity {
+    	padding-left: 5px;
+    	float: left;
+    	
+	}
+	#selectCity form {
+	    width: 90px; /* increase the width of the form */
+	    height: 30px; /* increase the height of the form */
+	}
+	#selectCity input {
+	    width: 100%; /* set the width of the input to 100% to fill the form */
+	    height: 100%; /* set the height of the input to 100% to fill the form */
+	    font-size: 25px; /* increase the font-size of the text */
+	    background-color: rgb(0, 0, 56);
+	    color: rgb(102, 255, 102);
+	}
+	#iconImg {
+		height: 30px;
+		width: 20px;
+	}
+    #city {
+    	float: left; /* align to the left */
+    	text-align: left;
+    	width: 25%;
+    }
+    #lon {
+    	text-align: center; /* center align the text */
+    	width: 20%;
+    }
+    #lat {
+    	text-align: center; /* center align the text */
+    	width: 20%;
+    }
+    #state {
+    	float: right; 
+    	text-align: right;
+    	width: 15%;
+    }
+    
     
     #top-notice {
     	width: 100%;
@@ -104,6 +148,18 @@ html, body {
    #bottom {
        height: 63%;
        width: 100%;
+   }
+   #bottom-space {
+   		padding-top: 20px;
+   		display: flex;
+	    align-items: center;
+	    text-align: center;
+   }
+   #mapid {
+   		height: 700px; 
+   		width: 98%;
+   		margin: auto;
+   		border: 3px solid black;
    }
    
    #homeMiddleBackgrdDiv{

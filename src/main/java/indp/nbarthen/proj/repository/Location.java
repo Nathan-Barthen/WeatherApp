@@ -8,6 +8,8 @@ import jakarta.persistence.OneToOne;
 
 import java.util.Vector;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /*
  * Location:
  * 	   If user searched using City+State.
@@ -46,13 +48,28 @@ public class Location {
 	public String getLon() {
 		return lon;
 	}
-
+	@JsonIgnore
+	public double getDoubleLon() {
+		//Used in chooseCorrectLocation.html 
+		//Convert to double, round to 3 decimal places
+		double doubleLon = Double.parseDouble(lon);
+		return Math.round(doubleLon * 1000.0) / 1000.0;
+	}
+	
 	public void setLon(String lon) {
 		this.lon = lon;
 	}
 
 	public String getLat() {
 		return lat;
+	}
+	
+	@JsonIgnore
+	public double getDoubleLat() {
+		//Used in chooseCorrectLocation.html 
+		//Convert to double, round to 3 decimal places
+		double doubleLat = Double.parseDouble(lat);
+		return Math.round(doubleLat * 1000.0) / 1000.0;
 	}
 
 	public void setLat(String lat) {
