@@ -7,7 +7,7 @@
 <title>Weather App</title>
 
 <link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-top.css">
-<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-bottom.css">
+<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-Today-bottom.css">
 <link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-advancedInfo.css">
 <link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-links.css">
 
@@ -110,272 +110,18 @@
 	                
             	</div>
             	
+            	<div id="bottom-space"></div>
             	
-            	<div id="bottom-3hourlyWeather1">
-            		<div id="bottom-3hourlyWeather-hourInfo">
-            			<div id="bottom-3hourlyWeather-hourInfo-box">
-            			
-            				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
-            				</div>
-            				
-            				<div id="bottom-3hourlyWeather-tempAndIcon">
-            					<div id="bottom-3hourlyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-3hourlyWeather-iconAndDisc">
-            						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
-            		
-            		
-            		<div id="bottom-3hourlyWeather-hourInfo">
-            			<div id="bottom-3hourlyWeather-hourInfo-box">
-            			
-            				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
-            				</div>
-            				
-            				<div id="bottom-3hourlyWeather-tempAndIcon">
-            					<div id="bottom-3hourlyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-3hourlyWeather-iconAndDisc">
-            						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
-            		<div id="bottom-3hourlyWeather-hourInfo">
-            			<div id="bottom-3hourlyWeather-hourInfo-box">
-            			
-            				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
-            				</div>
-            				
-            				<div id="bottom-3hourlyWeather-tempAndIcon">
-            					<div id="bottom-3hourlyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-3hourlyWeather-iconAndDisc">
-            						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
-            		<div id="bottom-3hourlyWeather-hourInfo">
-            			<div id="bottom-3hourlyWeather-hourInfo-box">
-            			
-            				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
-            				</div>
-            				
-            				<div id="bottom-3hourlyWeather-tempAndIcon">
-            					<div id="bottom-3hourlyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-3hourlyWeather-iconAndDisc">
-            						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
+            	<div id="bottom-weatherMap">
+            		<input type="hidden" id="lon" 		th:value="${report.getLocations().get(locationIndex).getLon()}"/>
+            		<input type="hidden" id="lat" 		th:value="${report.getLocations().get(locationIndex).getLat()}"/>
+            		<input type="hidden" id="apiKey" 	th:value="${apiKey}"/>
+            		<input type="hidden" id="city" 	th:value="${report.getCity()}"/>
+            		<div id="precipitationMap"></div>
             	</div>
             	
             	
             	
-            	<div id="bottom-3hourlyWeather2">
-            		<div id="bottom-3hourlyWeather-hourInfo">
-            			<div id="bottom-3hourlyWeather-hourInfo-box">
-            			
-            				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
-            				</div>
-            				
-            				<div id="bottom-3hourlyWeather-tempAndIcon">
-            					<div id="bottom-3hourlyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-3hourlyWeather-iconAndDisc">
-            						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
-            		<div id="bottom-3hourlyWeather-hourInfo">
-            			<div id="bottom-3hourlyWeather-hourInfo-box">
-            			
-            				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
-            				</div>
-            				
-            				<div id="bottom-3hourlyWeather-tempAndIcon">
-            					<div id="bottom-3hourlyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-3hourlyWeather-iconAndDisc">
-            						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
-            		<div id="bottom-3hourlyWeather-hourInfo">
-            			<div id="bottom-3hourlyWeather-hourInfo-box">
-            			
-            				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
-            				</div>
-            				
-            				<div id="bottom-3hourlyWeather-tempAndIcon">
-            					<div id="bottom-3hourlyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-3hourlyWeather-iconAndDisc">
-            						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
-            		<div id="bottom-3hourlyWeather-hourInfo">
-            			<div id="bottom-3hourlyWeather-hourInfo-box">
-            			
-            				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
-            				</div>
-            				
-            				<div id="bottom-3hourlyWeather-tempAndIcon">
-            					<div id="bottom-3hourlyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-3hourlyWeather-iconAndDisc">
-            						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
-            	</div>
             	
             	<div id="advancedInfo">
             		<div id="advancedInfo-Title">^ Advanced Info</div>
@@ -452,6 +198,11 @@
 	<script src="/javaScript/clicks-Tomorrow.js"></script>
 	<script src="/javaScript/clicks-5DayForeCast.js"></script>
 	
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+	<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+	<script src="https://cdn.jsdelivr.net/npm/leaflet.label@1.0.0/dist/leaflet.label.js"></script>
+	
+	<script src="/javaScript/leafletMap-PrecipitationMap.js"></script>
 	
 </body>
 </html>
