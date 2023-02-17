@@ -19,5 +19,7 @@
 		    advancedInfo.style.height = "45%";
 		    advancedInfo.style.top = "47.8%";
 		    
+		    //Call map function
+		    loadMap();
 		  }
 		});

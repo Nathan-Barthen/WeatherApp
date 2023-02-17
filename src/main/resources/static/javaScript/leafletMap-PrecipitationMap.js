@@ -4,15 +4,14 @@
  * 	The openWeather API returns a list of locations
  *   These locations will be displayed on a map where the user can select the correct location
  */
-		
+	function loadMap() {
 		var lat = parseFloat(document.getElementById("lat").value);
 		var lon = parseFloat(document.getElementById("lon").value);
 		var apiKey = document.getElementById("apiKey").value;
-		var city = document.getElementById("city").value
-		console.log("Hello- " + lat + " " + lon + " " + apiKey);
+		var city = document.getElementById("city").value;
 		
 		
-	    var map = L.map("precipitationMap").setView([lat, lon], 7);
+	    var map = L.map("precipitationMap").setView([lat, lon], 11);
 
 	    //Add background map to show city/states/counties
 	    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -35,7 +34,8 @@
 		L.tileLayer("https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=" + apiKey, {
 			  maxZoom: 18,
 			  attribution: 'Map data © OpenWeatherMap'
-			}).addTo(map);
+		}).addTo(map);
 		
-		
+
+	}
 		

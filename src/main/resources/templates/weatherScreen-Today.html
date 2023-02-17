@@ -8,7 +8,7 @@
 
 <link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-top.css">
 <link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-Today-bottom.css">
-<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-advancedInfo.css">
+<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-advancedInfo-Today.css">
 <link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-links.css">
 
 </head>
@@ -85,77 +85,61 @@
 							Real Feel: [[${today.getCurrFeelsLike()}]]&#176;F                  
 	                	</div>
 	                	<div id="bottom-currentWeatherInfo-col1-sunset">
-							Sunrise: [[${today.getSunrise()}]] <br>
-							Sunset: [[${today.getSunset()}]]
+							Sunrise: [[${today.getSunriseTime()}]] <br>
+							Sunset: [[${today.getSunsetTime()}]]
 	                	</div>
 	                	
 	                </div>
 	                <div id="bottom-currentWeatherInfo-col2">
-	                	<div id="bottom-currentWeatherInfo-col2-warningBorder">
-		                	<span id="bottom-currentWeatherInfo-col2-warningTitle"> <b>Weather Warning(s):</b> </span>
-		                	<div id="bottom-currentWeatherInfo-col2-warning">
-								No current Weather Warnings for your area.
-		                	</div>
-	                	</div>
+	                	
 	                	<div id="bottom-currentWeatherInfo-col2-info">
 							Cloudiness: [[${today.getCloudiness()}]]% <br>
-							Wind speed: [[${today.getWindSpeed()}]] mph<br> 
+							Wind speed: [[${today.getWindSpeed()}]] mph 
+							
+						</div>
+						<div id="bottom-currentWeatherInfo-col2-downfall">	
 							[[${today.getDownfallType()}]] <br>
-							<th:block th:if="${today.getDownfallAmount() != 0}">
-							    [[${today.getDownfallAmount()}]] <br>
-							</th:block>
-
-	                	</div>
+							<span id="downfallAmount"><th:block th:if="${today.getDownfallAmount() != 0}">
+							    [[${today.getDownfallAmountMmAndInches()}]]
+							</th:block> </span>
+						</div>
+	                	
 	                </div>
 	                
             	</div>
             	
-            	<div id="bottom-space"></div>
             	
-            	<div id="bottom-weatherMap">
-            		<input type="hidden" id="lon" 		th:value="${report.getLocations().get(locationIndex).getLon()}"/>
-            		<input type="hidden" id="lat" 		th:value="${report.getLocations().get(locationIndex).getLat()}"/>
-            		<input type="hidden" id="apiKey" 	th:value="${apiKey}"/>
-            		<input type="hidden" id="city" 	th:value="${report.getCity()}"/>
-            		<div id="precipitationMap"></div>
-            	</div>
-            	
+         
             	
             	
             	
             	<div id="advancedInfo">
             		<div id="advancedInfo-Title">^ Advanced Info</div>
             		<div id="advancedInfo-hiddenContent">
-            			<span id="hiddenContent-tempGraph-Title">Today's Temperature Graph (&#176;F)</span>
-						<div id="graph-container">
-						  <canvas id="temp-graph"></canvas>
-						</div>
-						<div id="hiddenContent-tempValuesDiv">
-							<div id="hiddenContent-avgTempValues1">20&#176;</div>
-							<div id="hiddenContent-avgTempValues2">22&#176;</div>
-							<div id="hiddenContent-avgTempValues3">24&#176;</div>
-							<div id="hiddenContent-avgTempValues4">25&#176;</div>
-							<div id="hiddenContent-avgTempValues5">26&#176;</div>
-							<div id="hiddenContent-avgTempValues6">24&#176;</div>
-							<div id="hiddenContent-avgTempValues7">22&#176;</div>
-							<div id="hiddenContent-avgTempValues8">20&#176;</div>
-						</div>
+            			<span id="hiddenContent-tempGraph-Title">[[${report.getCity()}]] (Clouds and Precipitation)</span>
+						
+						<div id="weatherMap">
+		            		<input type="hidden" id="lon" 		th:value="${report.getLocations().get(locationIndex).getLon()}"/>
+		            		<input type="hidden" id="lat" 		th:value="${report.getLocations().get(locationIndex).getLat()}"/>
+		            		<input type="hidden" id="apiKey" 	th:value="${apiKey}"/>
+		            		<input type="hidden" id="city" 	th:value="${report.getCity()}"/>
+		            		<div id="precipitationMap"></div>
+		            	</div>
 						
 						<div id="hiddenContent-otherInfo">
 							<div id="hiddenContent-otherInfo-col1">
 								<div id="hiddenContent-otherInfo-col1-info">
-									Real Feel: 54&#176;F <br>
-									Wind  <br>
-									Other...
+									Solar noon: [[${today.getSolarNoon()}]] <br>
+									Sunlight: [[${today.getTotalSunlight()}]] <br>
+									Sunlight remaining: [[${today.getRemainingSunlight()}]]
 									                  
 			                	</div>
 			                	
 			                </div>
 			                <div id="hiddenContent-otherInfo-col2">
 			                	<div id="hiddenContent-otherInfo-col2-info">
-									Real Feel: 54&#176;F <br>
-									Wind  <br>
-									Other...
+									Humidity: [[${today.getCurrHumidity()}]]% <br>
+									visibility: [[${today.getVisibilityMiles()}]]mi
 									                  
 			                	</div>
 	                	
@@ -194,7 +178,6 @@
 	<script src="/javaScript/entersLocation.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script src="/javaScript/advancedInfo-Popup.js"></script>
-	<script src="/javaScript/advandedInfo-Graph.js"></script>
 	<script src="/javaScript/clicks-Tomorrow.js"></script>
 	<script src="/javaScript/clicks-5DayForeCast.js"></script>
 	
