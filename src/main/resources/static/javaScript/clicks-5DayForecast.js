@@ -3,7 +3,11 @@
  */
 		
   document.getElementById("top-5DayDiv").addEventListener("click", function(){
-    window.location.href = "/weatherReport/" + "location" + "/5-DayForecast";
+	  var location = document.getElementById("location").value;
+	  var id = document.getElementById("id").value;
+	  var locationIndex = document.getElementById("locationIndex").value;
+	  
+      window.location.href = "/weatherReport/" + id + "/" + locationIndex + "/" + location + "/5-DayForecast";
   });
 
 		

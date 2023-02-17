@@ -3,7 +3,11 @@
  */
 		
   document.getElementById("top-TomorrowDiv").addEventListener("click", function(){
-    window.location.href = "/weatherReport/" + "location" + "/tomorrow";
+	  var location = document.getElementById("location").value;
+	  var id = document.getElementById("id").value;
+	  var locationIndex = document.getElementById("locationIndex").value;
+	  
+      window.location.href = "/weatherReport/" + id + "/" + locationIndex + "/" + location + "/tomorrow";
   });
 
 		

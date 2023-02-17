@@ -3,7 +3,11 @@
  */
 		
   document.getElementById("top-TodayDiv").addEventListener("click", function(){
-    window.location.href = "/";
+	  var location = document.getElementById("location").value;
+	  var id = document.getElementById("id").value;
+	  var locationIndex = document.getElementById("locationIndex").value;
+	  
+      window.location.href = "/weatherReport/" + id + "/" + locationIndex + "/" + location + "/today";
   });
 
 		

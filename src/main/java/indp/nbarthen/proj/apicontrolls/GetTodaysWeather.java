@@ -15,7 +15,12 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class GetTodaysWeather {
 	
-	
+	/*Gets the today's information from the API
+	 * 	Information is stored in report and returned by the function
+	 * 	locationIndex is used to access the the index inside if report.getLocations()
+	 * 		-Since the city+state query returns 5 locations, 
+	 *       the index is remember so we use the location selected by the user.
+	 */
 	public static WeatherReport todaysWeatherReport(WeatherReport report, int locationIndex) {
 		
 		try {
@@ -36,7 +41,6 @@ public class GetTodaysWeather {
 			
 			JsonNode weatherReportRoot = weatherReportMapper.readTree(weatherReportResponse.toString());
 			
-			System.out.println(weatherReportRoot.toString());
 			TodayReport todayReport = new TodayReport();
 			
 			
