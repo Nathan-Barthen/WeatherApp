@@ -1,0 +1,106 @@
+
+/* ADVANCED INFO */
+
+
+  /* START ADVANCED INFO */ 
+   
+   #advancedInfo {
+   		width: 100%;
+ 	 	height: 3%;
+ 	    top: 89.8%;
+ 	 	
+ 	 	z-index: 4;
+ 	 	bottom: 0;
+ 	 	background-color: rgb(166, 166, 166);
+ 	 	
+	    
+	    border-top: 1px solid black;
+	    font-size: 50px;
+	    position: absolute;
+   }
+   #advancedInfo-Title {
+   		padding-left: 10px;
+   		display: flex;
+   		top: 0;
+   		left: 0;
+   		border-bottom: 3px solid black;
+   }
+   #advancedInfo-Title:hover {
+    	background-color: rgb(128, 128, 128);
+    	cursor: pointer;
+   }
+  
+   #advancedInfo-hiddenContent {
+   		display: none;
+   		padding-top: 5px;
+   		font-size: 30px;
+   }
+   #advancedInfo.expanded #advancedInfo-hiddenContent {
+	  display: block;
+	}
+	
+	#hiddenContent-tempGraph-Title {
+		height: 5%;
+		width: 100%;
+		color: rgb(0, 0, 204);
+		display: flex;
+		justify-content: center;
+	    align-items: center;
+	    text-align: center;
+	    padding-bottom: 5px;
+	}
+	
+	#weatherMap {
+		display: flex;
+   		width: 100%;
+ 	 	height: 55%;
+    }  
+	#precipitationMap {
+  		height: 500px; 
+   		width: 95%;
+   		margin: auto;
+   		border: 3px solid black;
+   		z-index: 1;
+  }
+	
+	#hiddenContent-otherInfo {
+		width: 95%;
+		height: 40%;
+		
+		border-top: 3px solid black;
+		margin: auto;
+		margin-top: 20px;
+		justify-content: center;
+	    align-items: center;
+	    text-align: center;
+		display: flex;
+		flex-dirction: row;
+		font-size: 42px;
+	}
+	#hiddenContent-otherInfo-col1 {
+		width: 65%;
+		height: 100%;
+		justify-content: center;
+	    align-items: center;
+	    text-align: start;
+	    padding-left: 30px;
+		margin: auto;
+		margin-top: 20px;
+		border-right: 1px solid black;
+		
+	}
+	#hiddenContent-otherInfo-col2 {
+		width: 35%;
+		height: 100%;
+		justify-content: center;
+	    align-items: center;
+	    text-align: start;
+	    padding-left: 30px;
+	    
+	    margin: auto;
+		margin-top: 20px;
+	}
+	 /* END ADVANCED INFO */
+	
+	
+   

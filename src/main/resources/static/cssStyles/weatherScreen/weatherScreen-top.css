@@ -168,13 +168,13 @@ html, body {
    }
     #top-imageDisc2 {
 	   	height: 15%;
-	   	max-width: 100%;
+	   	max-width: 300px;
 	   	display: flex;
 	  	align-items: flex-start; 
 	  	justify-content: center;
 	   	z-index: 2;
 		white-space: nowrap;
-		overflow: hidden;
+		overflow: visible;
 		text-overflow: ellipsis;
 		font-size: 30px;
    }

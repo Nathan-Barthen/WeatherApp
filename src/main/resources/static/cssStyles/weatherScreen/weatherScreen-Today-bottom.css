@@ -8,6 +8,10 @@
    #bottom {
        height: 63%;
        width: 100%;
+       background-image: url("/images/blueBackground.png");
+       background-size: cover;
+       background-position: center;
+       
    }
    
     /* START CURRENT WEATHER INFO */
@@ -74,75 +78,44 @@
  	 	height: 100%;
  	 	
    }
-   #bottom-currentWeatherInfo-col2-warningBorder {
-   		width: 105%;
-   		height: 46%;
- 	 	border-bottom: 1px solid black;
- 	 	border-left: 1px solid black;
- 	 	background-color: rgb(77, 77, 255);
-   }
-   #bottom-currentWeatherInfo-col2-warningTitle {
-   		width: 100%;
-   		height: 28%;
-   		color: white;
-   		display: flex;
-	  	align-items: flex-start; 
-		color: rgb(153, 0, 0);
-	  	position: relative;
-  		top: 5%;
-	  	left: 5%;
-	  	font-size: 45px;
-   }
-   #bottom-currentWeatherInfo-col2-warning {
-   		width: 95%;
-   		height: 36%;
-   		color: white;
-   		display: flex;
-	  	align-items: flex-start; 
-	  	position: relative;
-  		top: 12%;
-	  	left: 10%;
-	  	font-size: 35px;
-	  	
-   }
+ 
    #bottom-currentWeatherInfo-col2-info {
    		width: 95%;
-   		height: 54%;
+   		height: 50%;
    		display: flex;
-   		
-   		align-items: flex-end; 
+   		 
    		position: relative;
-  		bottom: 5%;
+  		top: 5%;
 	  	left: 10%;
 	  	font-family: Garamond, serif;
-	  	font-size: 40px;
+	  	font-size: 45px;
    
+   }
+   #bottom-currentWeatherInfo-col2-downfall{
+   		width: 95%;
+   		height: 50%;
+   		padding-top: 12%;
+   		position: relative;
+   		 
+   		align-items: flex-end; 
+  		bottom: 5%;
+	  	left: 10%;
+	  	font-size: 45px;
+	  	font-family: Garamond, serif;
+   
+   }
+   #downfallAmount {
+   		position: relative;
+   		
+   		align-items: flex-end; 
+   		left: 10%;
    }
        /* END COL2 INFO */ 
    
    /* END CURRENT WEATHER INFO */
    
- 
- 	#bottom-space {
-   		padding-top: 20px;
-   		display: flex;
-	    align-items: center;
-	    text-align: center;
-   }
-   
-   #bottom-weatherMap {
-   		width: 100%;
- 	 	height: 68%;
- 	 	
-   }  
   
-  #precipitationMap {
-  		height: 500px; 
-   		width: 95%;
-   		margin: auto;
-   		border: 3px solid black;
-   		z-index: 1;
-  }
+  
   
    
    
