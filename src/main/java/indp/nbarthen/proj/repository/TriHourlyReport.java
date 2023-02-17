@@ -33,7 +33,7 @@ public class TriHourlyReport {
 	private String downfallType; 			//Optional: Ex. 'Rain' 'Snow;  							
 	private double downfallTotalAmount; 	//Optional: Ex. ' "1h": 3.16 ' Can only be'3h'
 	
-	private int time;				//Time of data forecasted, unix, UTC - timezone (beginning of three hour window)
+	private long time;				//Time of data forecasted, unix (seconds), UTC - timezone (beginning of three hour window)
 	
 	public TriHourlyReport(){
 		
@@ -131,11 +131,11 @@ public class TriHourlyReport {
 		this.downfallTotalAmount = downfallTotalAmount;
 	}
 
-	public int getTime() {
+	public long getTime() {
 		return time;
 	}
 
-	public void setTime(int time) {
+	public void setTime(long time) {
 		this.time = time;
 	}
 

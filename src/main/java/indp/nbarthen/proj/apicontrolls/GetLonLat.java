@@ -46,7 +46,6 @@ public class GetLonLat {
 			
 			JsonNode weatherReportRoot = weatherReportMapper.readTree(weatherReportResponse.toString());
 			
-			System.out.println(weatherReportRoot.toString());
 			
 		   //Store information from JSON response
 			//Incorrect / invalid zip. Return error

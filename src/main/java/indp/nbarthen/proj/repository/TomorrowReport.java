@@ -34,8 +34,10 @@ public class TomorrowReport {
 	private double highTemp;		//Calculated from 3-Hourly Values
 	private double lowTemp;			//Calculated from 3-Hourly Values
 	
-	private String downfallType; 			//Optional: Ex. 'Rain' 'Snow;  							//Calculated from 3-Hourly Values
-	private double downfallTotalAmount; 	//Optional: Ex. ' "1h": 3.16 ' Could be '1h' or '3h'	//Calculated from 3-Hourly Values
+	private String downfallRain; 			//Optional: Ex. 'Rain' 'Snow;  							//Calculated from 3-Hourly Values
+	private double downfallRainAmount; 	//Optional: Ex. ' "1h": 3.16 ' Could be '1h' or '3h'	//Calculated from 3-Hourly Values
+	private String downfallSnow; 			//Optional: Ex. 'Rain' 'Snow;  							//Calculated from 3-Hourly Values
+	private double downfallSnowAmount; 	//Optional: Ex. ' "1h": 3.16 ' Could be '1h' or '3h'	//Calculated from 3-Hourly Values
 	
 	private int sunrise; 			// time, unix, UTC - timezone
 	private int sunset; 			// time, unix, UTC - timezone
@@ -135,24 +137,55 @@ public class TomorrowReport {
 	}
 
 
-	public String getDownfallType() {
-		return downfallType;
+
+
+
+	public String getDownfallRain() {
+		return downfallRain;
 	}
 
 
-	public void setDownfallType(String downfallType) {
-		this.downfallType = downfallType;
+
+	public void setDownfallRain(String downfallRain) {
+		this.downfallRain = downfallRain;
 	}
 
 
-	public double getDownfallTotalAmount() {
-		return downfallTotalAmount;
+
+	public double getDownfallRainAmount() {
+		return downfallRainAmount;
 	}
 
 
-	public void setDownfallTotalAmount(double downfallTotalAmount) {
-		this.downfallTotalAmount = downfallTotalAmount;
+
+	public void setDownfallRainAmount(double downfallRainAmount) {
+		this.downfallRainAmount = downfallRainAmount;
 	}
+
+
+
+	public String getDownfallSnow() {
+		return downfallSnow;
+	}
+
+
+
+	public void setDownfallSnow(String downfallSnow) {
+		this.downfallSnow = downfallSnow;
+	}
+
+
+
+	public double getDownfallSnowAmount() {
+		return downfallSnowAmount;
+	}
+
+
+
+	public void setDownfallSnowAmount(double downfallSnowAmount) {
+		this.downfallSnowAmount = downfallSnowAmount;
+	}
+
 
 
 	public int getSunrise() {

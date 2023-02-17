@@ -8,6 +8,9 @@
    #bottom {
        height: 63%;
        width: 100%;
+       background-image: url("/images/blueBackground.png");
+       background-size: cover;
+       background-position: center;
    }
    
     /* START CURRENT WEATHER INFO */

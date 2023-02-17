@@ -42,7 +42,10 @@ public class MainController {
 	
 	
 	
-	
+	/*homePage.html
+	 * 	User uses this page to search a city+state or Zip code
+	 * 	User may also be redirected here if there is an api error or syntax error in query
+	 */
 	 @RequestMapping({"/"})
 	    public String homePage(Model model) {
 		 
@@ -73,6 +76,13 @@ public class MainController {
 	        return "homePage";
 	    }
 	 
+	 
+	 
+	 /*Takes the users input (zip OR city+state) and processes it
+	  * 	If userInput is a ZIP: 						      redirects to weatherScreen-Today.html mapping
+	  * 	If userInput is city+state: 					  redirects to chooseCorrectLocation.html mapping
+	  * 	If there is an error in api or userInput syntax:  redirects to homePage.html
+	  */
 	 @RequestMapping({"weatherReport/getLocation/{userInput}"})
 	    public String getInputLocation(@PathVariable("userInput") String userInput, Model model) throws JsonMappingException, JsonProcessingException {
 		 	WeatherReport report = new WeatherReport();
@@ -113,6 +123,12 @@ public class MainController {
 	 
 	 
 	 
+	 
+	 /* chooseCorrectLocation.html - Mapping used if user enters a city+state
+	  * 	If the OpenWeather city+state query is used, the JSON returns an array of locations.
+	  * 	  This webpage will display those locations on a map where the user can choose correct location.
+	  *     When the user selects correct location. It will go to weatherScreen-Today.html
+	  */
 	 @RequestMapping({"weatherReport/{id}/chooseLocation"})
 	    public String chooseCorrectLocation(@PathVariable("id") String id, Model model) throws JsonMappingException, JsonProcessingException {
 		 	 WeatherReport report = weatherRepository.findById(id).get();
@@ -121,13 +137,18 @@ public class MainController {
 	        return "chooseCorrectLocation";
 	    }
 	 
+	 
+	 
+	 /*  weatherScreen-Today.html
+	  * 	Display the Today's weather information for the city / zip inputed by the user.
+	  */
 	 @RequestMapping({"weatherReport/{id}/{locationIndex}/{location}/today"})
 	    public String getTodaysReport(@PathVariable("id") String id, @PathVariable("locationIndex") String locationIndex, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
 		 	 WeatherReport report = weatherRepository.findById(id).get();
 		 	 
-		 	 //Get apiKey
-		 	Dotenv dotenv = Dotenv.load();
-			String apiKey = dotenv.get("API_KEY");	
+		 	 //Get apiKey (user for OpenWeather precipitation+cloud map)
+		 	 Dotenv dotenv = Dotenv.load();
+			 String apiKey = dotenv.get("API_KEY");	
 		 	//Get current time & date
 			 SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
 			 SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
@@ -136,9 +157,17 @@ public class MainController {
 			 
 			//Gets the current weather Info
 			 report = GetTodaysWeather.todaysWeatherReport(report, Integer.parseInt(locationIndex));
-			 	
+			 
+			 //Redirect if there is an api error	
+			 if(!report.getApiError().isEmpty()) {
+			 		//Get API error message and return to homePage.html
+			 		userSearchPopupError = report.getApiError();
+			 		return "redirect:/";
+			 }
+			 
 			 model.addAttribute("report", report);
 			 model.addAttribute("locationIndex", locationIndex);
+			 model.addAttribute("id", id);
 			 model.addAttribute("apiKey", apiKey);
 			 model.addAttribute("today", report.getToday());
 			 model.addAttribute("currentTime", timeFormat.format(date).toLowerCase());
@@ -147,18 +176,32 @@ public class MainController {
 	        return "weatherScreen-Today";
 	    }
 
-	 	
-	 @RequestMapping({"weatherReport/location/tomorrow"})
-	    public String getTomorrowsReport(Model model) throws JsonMappingException, JsonProcessingException {
+	 
+	 /*  weatherScreen-Today.html
+	  * 	Display the Today's weather information for the city / zip inputed by the user.
+	  */
+	 @RequestMapping({"weatherReport/{id}/{locationIndex}/{location}/tomorrow"})
+	    public String getTomorrowsReport(@PathVariable("id") String id, @PathVariable("locationIndex") String locationIndex, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
+		 	 WeatherReport report = weatherRepository.findById(id).get();
 		 	
-		 	
-	        return "weatherScreen-Tomorrow";
+		 	 report = GetFutureWeather.futureWeatherReport(report, Integer.parseInt(locationIndex));
+		 	 
+			 model.addAttribute("report", report);
+			 model.addAttribute("locationIndex", locationIndex);
+			 model.addAttribute("id", id);
+		 
+			 return "weatherScreen-Tomorrow";
 	    }
-	 @RequestMapping({"weatherReport/location/5-DayForecast"})
-	    public String get5DayReport(Model model) throws JsonMappingException, JsonProcessingException {
-		 	
-		 	
-	        return "weatherScreen-5DayForecast";
+	 @RequestMapping({"weatherReport/{id}/{locationIndex}/{location}/5-DayForecast"})
+	    public String get5DayReport(@PathVariable("id") String id, @PathVariable("locationIndex") String locationIndex, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
+		 	WeatherReport report = weatherRepository.findById(id).get();
+		 
+		 
+			 model.addAttribute("report", report);
+			 model.addAttribute("locationIndex", locationIndex);
+			 model.addAttribute("id", id);
+		 
+			 return "weatherScreen-5DayForecast";
 	    }
 	 
 	 

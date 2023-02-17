@@ -31,6 +31,9 @@
                 	<div id="top-column1">
 	                	<div id="top-location">
 	                    	Location
+	                    	<input type="hidden" id="location" 	th:value="${report.getCity()}"/>
+	                    	<input type="hidden" id="id" 	th:value="${id}"/>
+	                    	<input type="hidden" id="locationIndex" 	th:value="${locationIndex}"/>
 		                </div>
 		                <div id="top-time">
 		                    Tomorrow
