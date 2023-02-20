@@ -6,7 +6,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Vector;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /*
  * Tomorrow:
@@ -21,8 +27,7 @@ public class TriHourlyReport {
 	private long id;
 	
 	private double temp;
-	private double highTemp;
-	private double lowTemp;
+	private int humidity;  			//As a %
 	private double feelsLikeTemp;
 	
 	private int weatherId;			//Calculated / Chosen from 3-Hourly Values
@@ -30,13 +35,15 @@ public class TriHourlyReport {
 	private String weatherDesc;		//Calculated / Chosen from 3-Hourly Values
 	private String weatherIconId;	//Calculated / Chosen from 3-Hourly Values
 
+	private double downfallProbability;		//As a %
 	private String downfallType; 			//Optional: Ex. 'Rain' 'Snow;  							
-	private double downfallTotalAmount; 	//Optional: Ex. ' "1h": 3.16 ' Can only be'3h'
+	private double downfallTotalAmount; 	//Optional
 	
 	private long time;				//Time of data forecasted, unix (seconds), UTC - timezone (beginning of three hour window)
 	
 	public TriHourlyReport(){
-		
+		downfallType = "";
+		downfallTotalAmount = 0;
 	}
 
 	
@@ -51,29 +58,24 @@ public class TriHourlyReport {
 
 
 
-	public double getTemp() {
-		return temp;
+	public int getTemp() {
+		//Rounded to a whole number
+		return (int) Math.round(temp);
 	}
 
 	public void setTemp(double temp) {
 		this.temp = temp;
 	}
 
-	public double getHighTemp() {
-		return highTemp;
+	public int getHumidity () {
+		return humidity;
 	}
 
-	public void setHighTemp(double highTemp) {
-		this.highTemp = highTemp;
+	public void setHumidity(int humidity) {
+		this.humidity = humidity;
 	}
 
-	public double getLowTemp() {
-		return lowTemp;
-	}
-
-	public void setLowTemp(double lowTemp) {
-		this.lowTemp = lowTemp;
-	}
+	
 
 	public double getFeelsLikeTemp() {
 		return feelsLikeTemp;
@@ -115,6 +117,14 @@ public class TriHourlyReport {
 		this.weatherIconId = weatherIconId;
 	}
 
+	
+	public double getDownfallProbability() {
+		return downfallProbability;
+	}
+	public void setDownfallProbability(double downfallProbability) {
+		this.downfallProbability = downfallProbability;
+	}
+	
 	public String getDownfallType() {
 		return downfallType;
 	}
@@ -123,6 +133,15 @@ public class TriHourlyReport {
 		this.downfallType = downfallType;
 	}
 
+	
+	@JsonIgnore
+	public String getDownfallAmountMmAndInches() {
+		double downfallInches = downfallTotalAmount * 0.0393701; // conversion factor: 1 mm = 0.0393701 inches
+		downfallInches = Math.round(downfallInches * 100.0) / 100.0; // round to 2 decimal places
+		
+		return Double.toString(downfallInches) + "in";
+		
+	}
 	public double getDownfallTotalAmount() {
 		return downfallTotalAmount;
 	}
@@ -131,6 +150,22 @@ public class TriHourlyReport {
 		this.downfallTotalAmount = downfallTotalAmount;
 	}
 
+	
+	@JsonIgnore 
+	public String getTimeWindow() {
+		// Convert the localTimeMilli value to a LocalDateTime object
+		Instant instant = Instant.ofEpochMilli(time);
+		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
+
+		// Format the localDateTime to a string in the desired format
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ha");
+		String startTime = localDateTime.format(formatter);
+		String endTime = localDateTime.plusHours(3).format(formatter);
+
+		String timeRange = startTime + "-" + endTime;
+		return timeRange.toLowerCase(); // Example: timeRange = "12AM-3AM" if time represents 12:00 AM
+
+	}
 	public long getTime() {
 		return time;
 	}

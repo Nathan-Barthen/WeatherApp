@@ -166,7 +166,7 @@ public class TodayReport {
 
 	@JsonIgnore
 	public String getDownfallAmountMmAndInches() {
-		double downfallInches = downfallAmount / 0.0393701; // conversion factor: 1 mm = 0.0393701 inches
+		double downfallInches = downfallAmount * 0.0393701; // conversion factor: 1 mm = 0.0393701 inches
 		downfallInches = Math.round(downfallInches * 100.0) / 100.0; // round to 2 decimal places
 		
 		return Double.toString(downfallInches) + "in (" + Double.toString(downfallAmount) + "mm)";

@@ -28,6 +28,9 @@ public class GetFutureWeather {
 	 * 		-Since the city+state query returns 5 locations, 
 	 *       the index is remember so we use the location selected by the user.
 	 */
+	
+	//Saves generic data for tomorrow: (sunrise, sunset, population, timezone, date)
+	//Calls tomorrowsTriHouryWeatherReport function and tomorrowsSummaryData function.
 	public static WeatherReport futureWeatherReport(WeatherReport report, int locationIndex) {
 		
 		try {
@@ -47,15 +50,15 @@ public class GetFutureWeather {
 			ObjectMapper  weatherReportMapper = new ObjectMapper();
 			
 			JsonNode weatherReportRoot = weatherReportMapper.readTree(weatherReportResponse.toString());
-			
-			System.out.println(weatherReportRoot.toString());
+
 			
 			//Save generic data
 			TomorrowReport tomorrow = report.getTomorrow();
-			tomorrow.setSunrise(weatherReportRoot.path("sunrise").asInt());
-			tomorrow.setSunset(weatherReportRoot.path("sunset").asInt());
-			tomorrow.setCityPopulation(weatherReportRoot.path("population").asInt());
-			tomorrow.setTimezone(weatherReportRoot.path("timezone").asInt());
+			tomorrow.setSunrise(weatherReportRoot.path("city").get("sunrise").asInt());
+			tomorrow.setSunset(weatherReportRoot.path("city").get("sunset").asInt());
+			tomorrow.setCityPopulation(weatherReportRoot.path("city").get("population").asInt());
+			tomorrow.setTimezone(weatherReportRoot.path("city").get("timezone").asInt());
+			tomorrow.setTomorrowsDate();
 			
 			//Array list of the tri-hourly data
 			JsonNode listArray = weatherReportRoot.path("list");
@@ -86,6 +89,7 @@ public class GetFutureWeather {
 
 	
 	//Takes the list of tri-hourly data and stores tomorrows data from the 5 day forecast API json.
+	//For each 3-Hourly Data, it saves: time, temp (temp, feels like, high, low), weather (id, main, desc, iconId), downfall (if available)
 	public static WeatherReport tomorrowsTriHouryWeatherReport(WeatherReport report, JsonNode listArray) {
 		
 		//Get the time for tomorrow at 12:00am and 3:00 am
@@ -116,16 +120,14 @@ public class GetFutureWeather {
 				//Save temp data
 				triReport.setTemp(triHourlyData.path("main").get("temp").asDouble());
 				triReport.setFeelsLikeTemp(triHourlyData.path("main").get("feels_like").asDouble());
-				triReport.setLowTemp(triHourlyData.path("main").get("temp_min").asDouble());
-				triReport.setHighTemp(triHourlyData.path("main").get("temp_max").asDouble());
-				
+				triReport.setHumidity(triHourlyData.path("main").get("humidity").asInt());
 				//Save weather data.
-				triReport.setWeatherId(triHourlyData.path("weather").get("id").asInt());
-				triReport.setWeatherMain(triHourlyData.path("weather").get("main").asText());
-				triReport.setWeatherDesc(triHourlyData.path("weather").get("description").asText());
-				triReport.setWeatherIconId(triHourlyData.path("weather").get("icon").asText());
-				
+				triReport.setWeatherId(triHourlyData.path("weather").get(0).get("id").asInt());
+				triReport.setWeatherMain(triHourlyData.path("weather").get(0).get("main").asText());
+				triReport.setWeatherDesc(triHourlyData.path("weather").get(0).get("description").asText());
+				triReport.setWeatherIconId(triHourlyData.path("weather").get(0).get("icon").asText());
 				//Check for precipitation data and save data if it exists
+				triReport.setDownfallProbability(triHourlyData.get("pop").asDouble()*100);
 				//Returned JSON contains Rain precipitation data
 				if ( triHourlyData.has("rain") ){
 					//Data is for past hour
@@ -175,12 +177,19 @@ public class GetFutureWeather {
 	}
 
 	
+	
+	
+	
+	//Calculates / Saves: temp (avg, high, low), avg weather (id, main, desc, iconId), downfall totals (if they exist)
 	public static WeatherReport tomorrowsSummaryData(WeatherReport report) {
 		TomorrowReport tomorrow = report.getTomorrow();
 		
 		double avgTemp = 0;     	//Calculated from 3-Hourly Values
-		double highTemp = 0;		//Calculated from 3-Hourly Values
-		double lowTemp = 0;			//Calculated from 3-Hourly Values
+		
+		double totalRain = 0;
+		double totalSnow = 0;
+		
+		double highestDownfallProb = 0;
 		
 		// Initialize a map to keep track of the count for each weatherMain value
 		Map<String, Integer> weatherMainCount = new HashMap<>();
@@ -189,10 +198,9 @@ public class GetFutureWeather {
 		Map<String, TriHourlyReport> weatherMainAttributes = new HashMap<>();
 		
 		for(TriHourlyReport triHourReport : tomorrow.getTriHourlyReports()) {
+			
 			//Save temp data
 			avgTemp += triHourReport.getTemp();
-			highTemp += triHourReport.getHighTemp();
-			lowTemp += triHourReport.getLowTemp();
 			
 			//Save weatherMain data (ex. 'Rain') to a hashmap to find most common.
 			String weatherMain = triHourReport.getWeatherMain();
@@ -206,16 +214,23 @@ public class GetFutureWeather {
 			    weatherMainAttributes.put(weatherMain, triHourReport);
 			}
 			
-			
+			//Save highest downfall probability
+			if( triHourReport.getDownfallProbability() > highestDownfallProb) {
+				highestDownfallProb = triHourReport.getDownfallProbability();
+			}
 			//Save downfall amounts (if they exist)
-			
+			if(triHourReport.getDownfallType().contains("Rain")) {
+				totalRain += triHourReport.getDownfallTotalAmount();
+			}
+			else if(triHourReport.getDownfallType().contains("Snow")) {
+				totalSnow += triHourReport.getDownfallTotalAmount();
+			}
 			
 		}
 		
 		
 		
-		// Find the most common weatherMain
-		// Find the most common weatherMain value
+		// Find the most common weatherMain value + save additional information (desc, iconId, id)
 		String mostCommonWeatherMain = null;
 		int maxCount = 0;
 		for (Map.Entry<String, Integer> entry : weatherMainCount.entrySet()) {
@@ -233,9 +248,21 @@ public class GetFutureWeather {
 		tomorrow.setAvgWeatherIconId(mostCommonTriHourReport.getWeatherIconId());
 		
 		
-		//Save calculated Data
+	   //Save calculated Data
+		//Get mean of temps.
+		avgTemp = avgTemp / tomorrow.getTriHourlyReports().size();
+		//Save temps
+		tomorrow.setAvgTemp(avgTemp);
+		
+		//Save downfall probability (may be 0)
+		tomorrow.setDownfallProbability(highestDownfallProb);
+		//Save downfall (vales may be 0)
+		tomorrow.setDownfallRainAmount(totalRain);
+		tomorrow.setDownfallSnowAmount(totalSnow);
 		
 		
+		//Save tomorrow report.
+		report.setTomorrow(tomorrow);
 		
 		return report;
 	}

@@ -30,7 +30,7 @@
                 <div id="top-columns">
                 	<div id="top-column1">
 	                	<div id="top-location">
-	                    	Location
+	                    	[[${report.getCity()}]]
 	                    	<input type="hidden" id="location" 	th:value="${report.getCity()}"/>
 	                    	<input type="hidden" id="id" 	th:value="${id}"/>
 	                    	<input type="hidden" id="locationIndex" 	th:value="${locationIndex}"/>
@@ -39,28 +39,26 @@
 		                    Tomorrow
 		                </div>
 		                <div id="top-date">
-		                    Date (TMRW)
+		                    [[${tomorrow.getTomorrowsDate()}]]
 		                </div>
 		            </div>
 		            
 		            <div id="top-column2">
 	                	<div id="top-avgTemp">
-	                    	60<span id="degreesSymbol">&#176;</span>F
+	                    	[[${tomorrow.getAvgTemp()}]]<span id="degreesSymbol">&#176;</span>F
 		                </div>
-		                <div id="top-highLowTemp">
-	                    	71 - 49 <span id="degreesSymbol">&#176;</span>F
-		                </div> 
+		                
 		            </div>
 		            
 		            <div id="top-column3">
 	                	<div id="top-imageDiv">
-	                    	<img id="top-currentWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
+	                    	<img id="top-currentWeatherImg" th:src="@{'http://openweathermap.org/img/wn/' + ${tomorrow.getAvgWeatherIconId()} + '@2x.png'}"/>
 		                </div>
 		                <div id="top-imageDisc">
-	                    	Sunny
+	                    	[[${tomorrow.getAvgWeatherMain()}]]
 		                </div>
 		                <div id="top-imageDisc2">
-	                    	<i>(Expect Sun)</i>
+	                    	<i>([[${tomorrow.getAvgWeatherDesc()}]])</i>
 		                </div>
 		                
 		            </div>
@@ -87,21 +85,33 @@
 	                <div id="bottom-currentWeatherInfo-col1">
 	                	<span id="bottom-currentWeatherInfo-col1-title"> <b>Tomorrow:</b> </span>
 						<div id="bottom-currentWeatherInfo-col1-info">
-							Average: 60&#176;F  <br>
-							Real Feel: 54&#176;F                  
+							Average: [[${tomorrow.getAvgTemp()}]]&#176;F  <br>              
 	                	</div>
 	                	<div id="bottom-currentWeatherInfo-col1-sunset">
-							Sunrise: 7:21am <br>
-							Sunset: 6:37pm
+							Sunrise: [[${tomorrow.getSunriseTime()}]] <br>
+							Sunset: [[${tomorrow.getSunsetTime()}]]
 	                	</div>
 	                	
 	                </div>
 	                <div id="bottom-currentWeatherInfo-col2">
 	                	
 	                	<div id="bottom-currentWeatherInfo-col2-info">
-							sdsdfsdfsdfsdfm <br>
-							sdfsdfsdfsdfsdf ghghgh <br> 
-							ghghgh
+	                		Precipitation: <br>
+	                		<span id="precipChance">Chance: [[${tomorrow.getDownfallProbability()}]]% </span>
+	                		<br>
+	                		<th:block th:if="${tomorrow.getDownfallRainAmount() != 0}">
+	                			<span id="downfall"> 
+	                			  Rain: [[${tomorrow.getDownfallAmountRainMmAndInches()}]]
+								 </span>
+							</th:block>
+							<th:block th:if="${tomorrow.getDownfallSnowAmount() != 0}">
+	                			<span id="downfallTitle"> 
+	                			  Snow: [[${tomorrow.getDownfallAmountSnowMmAndInches()}]]
+								 </span>
+							</th:block>
+							<th:block th:if="${tomorrow.getDownfallRainAmount() == 0 && tomorrow.getDownfallSnowAmount() == 0}">
+								None
+							</th:block>
 	                	</div>
 	                	
 	                </div>
@@ -110,269 +120,103 @@
             	
             	
             	<div id="bottom-3hourlyWeather1">
-            		<div id="bottom-3hourlyWeather-hourInfo">
+            		<div id="bottom-3hourlyWeather-hourInfo" th:each="triReport, iterStat : ${tomorrow.getTriHourlyReports()}" th:if="${iterStat.index} &lt; 4">
             			<div id="bottom-3hourlyWeather-hourInfo-box">
             			
             				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
+            					<b>  [[${triReport.getTimeWindow()}]] </b>
             				</div>
             				
             				<div id="bottom-3hourlyWeather-tempAndIcon">
             					<div id="bottom-3hourlyWeather-temp">
-            						Temp
+            						 [[${triReport.getTemp()}]]&#176;F 
             					</div>
             					<div id="bottom-3hourlyWeather-iconAndDisc">
             						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
+            							<img id="bottom-3hourlyWeatherImg" th:src="@{'http://openweathermap.org/img/wn/' + ${triReport.getWeatherIconId()} + '@2x.png'}"/>
+		                			</div>
             						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
+            							 [[${triReport.getWeatherMain()}]]
             						</div>
             					</div>
             				</div>
             				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
 		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
+		            				([[${triReport.getWeatherDesc()}]])
 		            		</div>	
 		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
+		            				<th:block th:if="${triReport.downfallType.contains('Rain')}">
+			                			<span id="3hourlyWeather-downfallAmount"> 
+			                			  Rain: [[${triReport.getDownfallAmountMmAndInches()}]]
+										 </span>
+									</th:block>
+									<th:block th:if="${triReport.downfallType.contains('Snow')}">
+			                			<span id="3hourlyWeather-downfallAmount"> 
+			                			  Snow: [[${triReport.getDownfallAmountMmAndInches()}]]
+										 </span>
+									</th:block>
+									<th:block th:if="${triReport.getDownfallTotalAmount() == 0}">
+										Precip: None
+									</th:block>
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-humidity">
+		            				Humidity: [[${triReport.getHumidity()}]]%
 		            		</div>	
             			</div>
             		</div>
             		
             		
-            		<div id="bottom-3hourlyWeather-hourInfo">
-            			<div id="bottom-3hourlyWeather-hourInfo-box">
-            			
-            				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
-            				</div>
-            				
-            				<div id="bottom-3hourlyWeather-tempAndIcon">
-            					<div id="bottom-3hourlyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-3hourlyWeather-iconAndDisc">
-            						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
-            		<div id="bottom-3hourlyWeather-hourInfo">
-            			<div id="bottom-3hourlyWeather-hourInfo-box">
-            			
-            				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
-            				</div>
-            				
-            				<div id="bottom-3hourlyWeather-tempAndIcon">
-            					<div id="bottom-3hourlyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-3hourlyWeather-iconAndDisc">
-            						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
-            		<div id="bottom-3hourlyWeather-hourInfo">
-            			<div id="bottom-3hourlyWeather-hourInfo-box">
-            			
-            				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
-            				</div>
-            				
-            				<div id="bottom-3hourlyWeather-tempAndIcon">
-            					<div id="bottom-3hourlyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-3hourlyWeather-iconAndDisc">
-            						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
+            		
             	</div>
             	
             	
             	
             	<div id="bottom-3hourlyWeather2">
-            		<div id="bottom-3hourlyWeather-hourInfo">
+            		<div id="bottom-3hourlyWeather-hourInfo" th:each="triReport, iterStat : ${tomorrow.getTriHourlyReports()}" th:if="${iterStat.index >= 4 and iterStat.index < 8}">
             			<div id="bottom-3hourlyWeather-hourInfo-box">
             			
             				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
+            					<b>  [[${triReport.getTimeWindow()}]] </b>
             				</div>
             				
             				<div id="bottom-3hourlyWeather-tempAndIcon">
             					<div id="bottom-3hourlyWeather-temp">
-            						Temp
+            						 [[${triReport.getTemp()}]]&#176;F 
             					</div>
             					<div id="bottom-3hourlyWeather-iconAndDisc">
             						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
+            							<img id="bottom-3hourlyWeatherImg" th:src="@{'http://openweathermap.org/img/wn/' + ${triReport.getWeatherIconId()} + '@2x.png'}"/>
+		                			</div>
             						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
+            							 [[${triReport.getWeatherMain()}]]
             						</div>
             					</div>
             				</div>
             				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
 		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
+		            				([[${triReport.getWeatherDesc()}]])
 		            		</div>	
 		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
+		            				<th:block th:if="${triReport.downfallType.contains('Rain')}">
+			                			<span id="3hourlyWeather-downfallAmount"> 
+			                			  Rain: [[${triReport.getDownfallAmountMmAndInches()}]]
+										 </span>
+									</th:block>
+									<th:block th:if="${triReport.downfallType.contains('Snow')}">
+			                			<span id="3hourlyWeather-downfallAmount"> 
+			                			  Snow: [[${triReport.getDownfallAmountMmAndInches()}]]
+										 </span>
+									</th:block>
+									<th:block th:if="${triReport.getDownfallTotalAmount() == 0}">
+										Precip: None
+									</th:block>
+		            		</div>	
+		            		<div id="bottom-3hourlyWeather-humidity">
+		            				Humidity: [[${triReport.getHumidity()}]]%
 		            		</div>	
             			</div>
             		</div>
-            		<div id="bottom-3hourlyWeather-hourInfo">
-            			<div id="bottom-3hourlyWeather-hourInfo-box">
-            			
-            				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
-            				</div>
-            				
-            				<div id="bottom-3hourlyWeather-tempAndIcon">
-            					<div id="bottom-3hourlyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-3hourlyWeather-iconAndDisc">
-            						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
-            		<div id="bottom-3hourlyWeather-hourInfo">
-            			<div id="bottom-3hourlyWeather-hourInfo-box">
-            			
-            				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
-            				</div>
-            				
-            				<div id="bottom-3hourlyWeather-tempAndIcon">
-            					<div id="bottom-3hourlyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-3hourlyWeather-iconAndDisc">
-            						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
-            		<div id="bottom-3hourlyWeather-hourInfo">
-            			<div id="bottom-3hourlyWeather-hourInfo-box">
-            			
-            				<div id="bottom-3hourlyWeather-time">
-            					<b> 12am-3am </b>
-            				</div>
-            				
-            				<div id="bottom-3hourlyWeather-tempAndIcon">
-            					<div id="bottom-3hourlyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-3hourlyWeather-iconAndDisc">
-            						<div id="bottom-3hourlyWeather-icon">
-            							<img id="bottom-3hourlyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-3hourlyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-3hourlyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-3hourlyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
+            		
             	</div>
             	
             	<div id="advancedInfo">
