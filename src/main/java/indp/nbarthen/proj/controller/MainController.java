@@ -173,6 +173,9 @@ public class MainController {
 			 model.addAttribute("currentTime", timeFormat.format(date).toLowerCase());
 			 model.addAttribute("currentDate", dateFormat.format(today));
 		 	
+			 //Update repository w/ added information
+			 weatherRepository.save(report);
+			 
 	        return "weatherScreen-Today";
 	    }
 
@@ -184,12 +187,19 @@ public class MainController {
 	    public String getTomorrowsReport(@PathVariable("id") String id, @PathVariable("locationIndex") String locationIndex, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
 		 	 WeatherReport report = weatherRepository.findById(id).get();
 		 	
+		 	 
+		 	 
+		 	 //Gets the data for tomorrow and the 5 day report.
 		 	 report = GetFutureWeather.futureWeatherReport(report, Integer.parseInt(locationIndex));
 		 	 
 			 model.addAttribute("report", report);
+			 model.addAttribute("tomorrow", report.getTomorrow());
 			 model.addAttribute("locationIndex", locationIndex);
 			 model.addAttribute("id", id);
 		 
+			//Update repository w/ added information
+			 weatherRepository.save(report);
+			 
 			 return "weatherScreen-Tomorrow";
 	    }
 	 @RequestMapping({"weatherReport/{id}/{locationIndex}/{location}/5-DayForecast"})
@@ -201,6 +211,10 @@ public class MainController {
 			 model.addAttribute("locationIndex", locationIndex);
 			 model.addAttribute("id", id);
 		 
+			//Update repository w/ added information
+			 weatherRepository.save(report);
+			 
+			 
 			 return "weatherScreen-5DayForecast";
 	    }
 	 

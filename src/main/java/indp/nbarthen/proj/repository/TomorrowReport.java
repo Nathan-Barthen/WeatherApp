@@ -8,8 +8,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ibm.icu.util.TimeZone;
+
+import java.util.Date;
+import java.util.Vector;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ibm.icu.text.SimpleDateFormat;
 
 /*
  * Tomorrow:
@@ -23,6 +34,7 @@ public class TomorrowReport {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
+	private String tomorrowsDate;
 	
 	private int avgWeatherId;			//Calculated / Chosen from 3-Hourly Values
 	private String avgWeatherMain;		//Calculated / Chosen from 3-Hourly Values
@@ -31,13 +43,11 @@ public class TomorrowReport {
 	
 	
 	private double avgTemp;     	//Calculated from 3-Hourly Values
-	private double highTemp;		//Calculated from 3-Hourly Values
-	private double lowTemp;			//Calculated from 3-Hourly Values
 	
-	private String downfallRain; 			//Optional: Ex. 'Rain' 'Snow;  							//Calculated from 3-Hourly Values
-	private double downfallRainAmount; 	//Optional: Ex. ' "1h": 3.16 ' Could be '1h' or '3h'	//Calculated from 3-Hourly Values
-	private String downfallSnow; 			//Optional: Ex. 'Rain' 'Snow;  							//Calculated from 3-Hourly Values
-	private double downfallSnowAmount; 	//Optional: Ex. ' "1h": 3.16 ' Could be '1h' or '3h'	//Calculated from 3-Hourly Values
+	private double downfallProbability; 		///As a % - Calculated from 3-Hourly Values
+	private double downfallRainAmount; 		//Optional: May be 0
+	private double downfallSnowAmount; 		//Optional: May be 0			//Optional: May be 0
+	
 	
 	private int sunrise; 			// time, unix, UTC - timezone
 	private int sunset; 			// time, unix, UTC - timezone
@@ -55,6 +65,8 @@ public class TomorrowReport {
 	//Constructor
 	public TomorrowReport(){
 		triHourlyReports = new Vector<TriHourlyReport>();
+		downfallRainAmount = 0;
+		downfallSnowAmount = 0;
 	}
 
 	
@@ -67,6 +79,24 @@ public class TomorrowReport {
 		this.id = id;
 	}
 
+	public String getTomorrowsDate() {
+		return tomorrowsDate;
+	}
+
+
+	public void setTomorrowsDate() {
+		Date today = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(today);
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		Date tomorrow = calendar.getTime();
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+		String tomorrowStr = dateFormat.format(tomorrow);
+		this.tomorrowsDate = tomorrowStr;
+	}
+	
+	
 	public int getAvgWeatherId() {
 		return avgWeatherId;
 	}
@@ -107,8 +137,9 @@ public class TomorrowReport {
 	}
 
 
-	public double getAvgTemp() {
-		return avgTemp;
+	public int getAvgTemp() {
+		//Rounded to a whole number
+		return (int) Math.round(avgTemp);
 	}
 
 
@@ -117,37 +148,19 @@ public class TomorrowReport {
 	}
 
 
-	public double getHighTemp() {
-		return highTemp;
-	}
 
 
-	public void setHighTemp(double highTemp) {
-		this.highTemp = highTemp;
-	}
 
 
-	public double getLowTemp() {
-		return lowTemp;
-	}
-
-
-	public void setLowTemp(double lowTemp) {
-		this.lowTemp = lowTemp;
+	public int getDownfallProbability() {
+		//Rounded to int / whole number.
+		return (int) downfallProbability;
 	}
 
 
 
-
-
-	public String getDownfallRain() {
-		return downfallRain;
-	}
-
-
-
-	public void setDownfallRain(String downfallRain) {
-		this.downfallRain = downfallRain;
+	public void setDownfallProbability(double downfallProbability) {
+		this.downfallProbability = downfallProbability;
 	}
 
 
@@ -161,17 +174,14 @@ public class TomorrowReport {
 	public void setDownfallRainAmount(double downfallRainAmount) {
 		this.downfallRainAmount = downfallRainAmount;
 	}
-
-
-
-	public String getDownfallSnow() {
-		return downfallSnow;
-	}
-
-
-
-	public void setDownfallSnow(String downfallSnow) {
-		this.downfallSnow = downfallSnow;
+	
+	@JsonIgnore
+	public String getDownfallAmountRainMmAndInches() {
+		double downfallInches = downfallRainAmount * 0.0393701; // conversion factor: 1 mm = 0.0393701 inches
+		downfallInches = Math.round(downfallInches * 100.0) / 100.0; // round to 2 decimal places
+		
+		return Double.toString(downfallInches) + "in (" + Double.toString(downfallRainAmount) + "mm)";
+		
 	}
 
 
@@ -186,7 +196,27 @@ public class TomorrowReport {
 		this.downfallSnowAmount = downfallSnowAmount;
 	}
 
+	@JsonIgnore
+	public String getDownfallAmountSnowMmAndInches() {
+		double downfallInches = downfallRainAmount * 0.0393701; // conversion factor: 1 mm = 0.0393701 inches
+		downfallInches = Math.round(downfallInches * 100.0) / 100.0; // round to 2 decimal places
+		
+		return Double.toString(downfallInches) + "in (" + Double.toString(downfallRainAmount) + "mm)";
+		
+	}
 
+	@JsonIgnore
+	public String getSunriseTime() {
+		// Convert sunrise time to milliseconds
+        long sunriseMillis = (sunrise+timezone) * 1000L;
+        
+        // Set the time zone to UTC
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        timeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        
+        // Format the sunrise time to h:mm a format in UTC time zone
+        return timeFormat.format(new Date(sunriseMillis)).toLowerCase();
+	}
 
 	public int getSunrise() {
 		return sunrise;
@@ -198,6 +228,19 @@ public class TomorrowReport {
 	}
 
 
+	@JsonIgnore
+	public String getSunsetTime() {
+		// Convert sunrise time to milliseconds
+        long sunsetMillis = (sunset+timezone) * 1000L;
+        
+        // Set the time zone to UTC
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        timeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        
+        // Format the sunrise time to h:mm a format in UTC time zone
+        return timeFormat.format(new Date(sunsetMillis)).toLowerCase();
+	}
+	
 	public int getSunset() {
 		return sunset;
 	}
@@ -207,6 +250,20 @@ public class TomorrowReport {
 		this.sunset = sunset;
 	}
 
+	@JsonIgnore
+	public String getSolarNoon() {
+		// Calc solar noon time to seconds
+		long solarNoon = (sunrise + sunset) / 2;
+		//convert to miliseconds
+        long solarNoonMillis = solarNoon * 1000L;
+        
+        // Set the time zone to UTC
+        SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        timeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        
+        // Format the sunrise time to h:mm a format in UTC time zone
+        return timeFormat.format(new Date(solarNoonMillis)).toLowerCase();
+	}
 
 	public int getTimezone() {
 		return timezone;
