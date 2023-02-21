@@ -194,6 +194,7 @@ public class MainController {
 		 	 
 			 model.addAttribute("report", report);
 			 model.addAttribute("tomorrow", report.getTomorrow());
+			 
 			 model.addAttribute("locationIndex", locationIndex);
 			 model.addAttribute("id", id);
 		 
@@ -204,10 +205,13 @@ public class MainController {
 	    }
 	 @RequestMapping({"weatherReport/{id}/{locationIndex}/{location}/5-DayForecast"})
 	    public String get5DayReport(@PathVariable("id") String id, @PathVariable("locationIndex") String locationIndex, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
-		 	WeatherReport report = weatherRepository.findById(id).get();
+		 	 WeatherReport report = weatherRepository.findById(id).get();
 		 
 		 
 			 model.addAttribute("report", report);
+			 model.addAttribute("fiveDay", report.getFiveDayReport());
+			 model.addAttribute("fiveDayList", report.getFiveDayReport().getFiveDays());
+			 
 			 model.addAttribute("locationIndex", locationIndex);
 			 model.addAttribute("id", id);
 		 
