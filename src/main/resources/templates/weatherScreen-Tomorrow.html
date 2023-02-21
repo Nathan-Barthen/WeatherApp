@@ -39,7 +39,7 @@
 		                    Tomorrow
 		                </div>
 		                <div id="top-date">
-		                    [[${tomorrow.getTomorrowsDate()}]]
+		                    [[${tomorrow.getDaysDate()}]]
 		                </div>
 		            </div>
 		            
@@ -47,7 +47,9 @@
 	                	<div id="top-avgTemp">
 	                    	[[${tomorrow.getAvgTemp()}]]<span id="degreesSymbol">&#176;</span>F
 		                </div>
-		                
+		                <div id="top-highLowTemp">
+	                    	[[${tomorrow.getLowTemp()}]] - [[${tomorrow.getHighTemp()}]] <span id="degreesSymbol">&#176;</span>F
+		                </div>
 		            </div>
 		            
 		            <div id="top-column3">
@@ -101,11 +103,11 @@
 	                		<br>
 	                		<th:block th:if="${tomorrow.getDownfallRainAmount() != 0}">
 	                			<span id="downfall"> 
-	                			  Rain: [[${tomorrow.getDownfallAmountRainMmAndInches()}]]
+	                			  Rain: [[${tomorrow.getDownfallAmountRainMmAndInches()}]] <br>
 								 </span>
 							</th:block>
 							<th:block th:if="${tomorrow.getDownfallSnowAmount() != 0}">
-	                			<span id="downfallTitle"> 
+	                			<span id="downfall"> 
 	                			  Snow: [[${tomorrow.getDownfallAmountSnowMmAndInches()}]]
 								 </span>
 							</th:block>
@@ -147,12 +149,12 @@
 		            		<div id="bottom-3hourlyWeather-downfall">
 		            				<th:block th:if="${triReport.downfallType.contains('Rain')}">
 			                			<span id="3hourlyWeather-downfallAmount"> 
-			                			  Rain: [[${triReport.getDownfallAmountMmAndInches()}]]
+			                			  Rain: [[${triReport.getDownfallAmountInches()}]]
 										 </span>
 									</th:block>
 									<th:block th:if="${triReport.downfallType.contains('Snow')}">
 			                			<span id="3hourlyWeather-downfallAmount"> 
-			                			  Snow: [[${triReport.getDownfallAmountMmAndInches()}]]
+			                			  Snow: [[${triReport.getDownfallAmountInches()}]]
 										 </span>
 									</th:block>
 									<th:block th:if="${triReport.getDownfallTotalAmount() == 0}">
@@ -199,12 +201,12 @@
 		            		<div id="bottom-3hourlyWeather-downfall">
 		            				<th:block th:if="${triReport.downfallType.contains('Rain')}">
 			                			<span id="3hourlyWeather-downfallAmount"> 
-			                			  Rain: [[${triReport.getDownfallAmountMmAndInches()}]]
+			                			  Rain: [[${triReport.getDownfallAmountInches()}]]
 										 </span>
 									</th:block>
 									<th:block th:if="${triReport.downfallType.contains('Snow')}">
 			                			<span id="3hourlyWeather-downfallAmount"> 
-			                			  Snow: [[${triReport.getDownfallAmountMmAndInches()}]]
+			                			  Snow: [[${triReport.getDownfallAmountInches()}]]
 										 </span>
 									</th:block>
 									<th:block th:if="${triReport.getDownfallTotalAmount() == 0}">
@@ -227,31 +229,24 @@
 						  <canvas id="temp-graph"></canvas>
 						</div>
 						<div id="hiddenContent-tempValuesDiv">
-							<div id="hiddenContent-avgTempValues1">20&#176;</div>
-							<div id="hiddenContent-avgTempValues2">22&#176;</div>
-							<div id="hiddenContent-avgTempValues3">24&#176;</div>
-							<div id="hiddenContent-avgTempValues4">25&#176;</div>
-							<div id="hiddenContent-avgTempValues5">26&#176;</div>
-							<div id="hiddenContent-avgTempValues6">24&#176;</div>
-							<div id="hiddenContent-avgTempValues7">22&#176;</div>
-							<div id="hiddenContent-avgTempValues8">20&#176;</div>
+							 <div th:each="report, i : ${tomorrow.triHourlyReports}" th:id="'hiddenContent-avgTempValues' + ${i.index + 1}">
+						        <span th:text="${report.getTemp()}"></span>&#176;
+						    </div>
 						</div>
 						
 						<div id="hiddenContent-otherInfo">
 							<div id="hiddenContent-otherInfo-col1">
 								<div id="hiddenContent-otherInfo-col1-info">
-									Real Feel: 54&#176;F <br>
-									Wind  <br>
-									Other...
+									Solar noon: [[${tomorrow.getSolarNoon()}]] <br>
+									Sunlight: [[${tomorrow.getTotalSunlight()}]] <br>
 									                  
 			                	</div>
 			                	
 			                </div>
 			                <div id="hiddenContent-otherInfo-col2">
 			                	<div id="hiddenContent-otherInfo-col2-info">
-									Real Feel: 54&#176;F <br>
-									Wind  <br>
-									Other...
+									Population: [[${tomorrow.getCityPopulation()}]] <br>
+									
 									                  
 			                	</div>
 	                	
@@ -290,7 +285,7 @@
 	<script src="/javaScript/entersLocation.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script src="/javaScript/advancedInfo-Popup.js"></script>
-	<script src="/javaScript/advandedInfo-Graph.js"></script>
+	<script src="/javaScript/advandedInfo-Tomorrow-Graph.js"></script>
 	<script src="/javaScript/clicks-Today.js"></script>
 	<script src="/javaScript/clicks-5DayForeCast.js"></script>
 	

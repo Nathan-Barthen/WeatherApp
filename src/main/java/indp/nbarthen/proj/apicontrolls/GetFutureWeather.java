@@ -15,7 +15,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 
 import indp.nbarthen.proj.repository.TodayReport;
-import indp.nbarthen.proj.repository.TomorrowReport;
+import indp.nbarthen.proj.repository.FiveDayReport;
+import indp.nbarthen.proj.repository.FutureDayReport;
 import indp.nbarthen.proj.repository.TriHourlyReport;
 import indp.nbarthen.proj.repository.WeatherReport;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -53,12 +54,12 @@ public class GetFutureWeather {
 
 			
 			//Save generic data
-			TomorrowReport tomorrow = report.getTomorrow();
+			FutureDayReport tomorrow = report.getTomorrow();
 			tomorrow.setSunrise(weatherReportRoot.path("city").get("sunrise").asInt());
 			tomorrow.setSunset(weatherReportRoot.path("city").get("sunset").asInt());
 			tomorrow.setCityPopulation(weatherReportRoot.path("city").get("population").asInt());
 			tomorrow.setTimezone(weatherReportRoot.path("city").get("timezone").asInt());
-			tomorrow.setTomorrowsDate();
+			tomorrow.setDaysDate(1);
 			
 			//Array list of the tri-hourly data
 			JsonNode listArray = weatherReportRoot.path("list");
@@ -66,11 +67,16 @@ public class GetFutureWeather {
 			//Get and save tomorrow's triHourlyReport data
 			report = tomorrowsTriHouryWeatherReport(report, listArray);
 			//Save/Calc tomorrow's summary data
-			report = tomorrowsSummaryData(report);
+			FutureDayReport tmrw = report.getTomorrow();
+			tmrw = daysSummaryData(tmrw);
+			report.setTomorrow(tmrw);
+			
+			//Gets data for the 5 Day Report
+			report = fiveDayReport(report, listArray);
 			
 			
 			//Save weather related Data.
-			//todayReport.setWeatherId(weatherReportRoot.path("weather").get(0).path("id").asInt());
+			
 			
 			
 			
@@ -92,18 +98,15 @@ public class GetFutureWeather {
 	//For each 3-Hourly Data, it saves: time, temp (temp, feels like, high, low), weather (id, main, desc, iconId), downfall (if available)
 	public static WeatherReport tomorrowsTriHouryWeatherReport(WeatherReport report, JsonNode listArray) {
 		
-		//Get the time for tomorrow at 12:00am and 3:00 am
-		// Get the current UTC timestamp in milliseconds
-		long currentTimestamp = System.currentTimeMillis();
+		//Get the time for tomorrow at 12:00am and 2 days from now at 12:00 am
 
 		// Calculate the timestamp for 12:00 am tomorrow
 		LocalDateTime tomorrowMidnight = LocalDateTime.now(ZoneOffset.UTC).plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
 		long tomorrowMidnightTimestamp = tomorrowMidnight.toInstant(ZoneOffset.UTC).toEpochMilli();
 
-		// Calculate the timestamp for 2am 2 days from now
-			//Since the api returns 3 hour windows. The tomorrow data may go over to 2am the following day
-		LocalDateTime twoDaysFromNow2Am = LocalDateTime.now(ZoneOffset.UTC).plusDays(2).withHour(2).withMinute(0).withSecond(0).withNano(0);
-		long twoDaysFromNow2AmTimestamp = twoDaysFromNow2Am.toInstant(ZoneOffset.UTC).toEpochMilli();
+		// Calculate the timestamp for 12am 2 days from now
+		LocalDateTime twoDaysFromNow12Am = LocalDateTime.now(ZoneOffset.UTC).plusDays(2).withHour(0).withMinute(0).withSecond(0).withNano(0);
+		long twoDaysFromNowMidNightTimestamp = twoDaysFromNow12Am.toInstant(ZoneOffset.UTC).toEpochMilli();
 
 		
 		//List of tri-hourly report (to be stored in TomorrowReport.triHourlyReports
@@ -112,8 +115,8 @@ public class GetFutureWeather {
 		for (JsonNode triHourlyData : listArray) {
 			//Get local time for triHourlyData instance
 			long localTimeMilli = (triHourlyData.path("dt").asInt() + report.getTomorrow().getTimezone()) * 1000L;
-			//If data is tomorrows data ( time > tomorrow at midnight AND time < 2am the following day )
-			if(localTimeMilli >= tomorrowMidnightTimestamp && localTimeMilli <= twoDaysFromNow2AmTimestamp) {
+			//If data is tomorrows data ( time >= tomorrow at midnight AND time <= midnight 2 days from now)
+			if(localTimeMilli >= tomorrowMidnightTimestamp && localTimeMilli <= twoDaysFromNowMidNightTimestamp) {
 				TriHourlyReport triReport = new TriHourlyReport();
 				//Save 3-hourly data.
 				triReport.setTime(localTimeMilli);
@@ -167,7 +170,7 @@ public class GetFutureWeather {
 		
 		
 		//Save triHourlyData to TomorrowReport
-		TomorrowReport tomorrow = report.getTomorrow();
+		FutureDayReport tomorrow = report.getTomorrow();
 		tomorrow.setTriHourlyReports(triHourlyReports);
 		
 		//Save TomorrowReport to report.TomorrowReport
@@ -181,10 +184,12 @@ public class GetFutureWeather {
 	
 	
 	//Calculates / Saves: temp (avg, high, low), avg weather (id, main, desc, iconId), downfall totals (if they exist)
-	public static WeatherReport tomorrowsSummaryData(WeatherReport report) {
-		TomorrowReport tomorrow = report.getTomorrow();
+	public static FutureDayReport daysSummaryData(FutureDayReport futureDay) {
+		FutureDayReport day = futureDay;
 		
-		double avgTemp = 0;     	//Calculated from 3-Hourly Values
+		double avgTemp = 0;     	
+		double lowTemp = day.getTriHourlyReports().get(0).getTemp();
+		double highTemp = day.getTriHourlyReports().get(0).getTemp();
 		
 		double totalRain = 0;
 		double totalSnow = 0;
@@ -197,10 +202,20 @@ public class GetFutureWeather {
 		// Initialize a map to keep track of the attributes for each weatherMain value
 		Map<String, TriHourlyReport> weatherMainAttributes = new HashMap<>();
 		
-		for(TriHourlyReport triHourReport : tomorrow.getTriHourlyReports()) {
+		for(TriHourlyReport triHourReport : day.getTriHourlyReports()) {
 			
 			//Save temp data
 			avgTemp += triHourReport.getTemp();
+			
+			
+			//Check for new high & low temp + save value
+			if(triHourReport.getTemp() > highTemp) {
+				highTemp = triHourReport.getTemp();
+			}
+			else if(triHourReport.getTemp() < lowTemp) {
+				lowTemp = triHourReport.getTemp();
+			}
+			
 			
 			//Save weatherMain data (ex. 'Rain') to a hashmap to find most common.
 			String weatherMain = triHourReport.getWeatherMain();
@@ -242,31 +257,218 @@ public class GetFutureWeather {
 
 		// Get the attributes for the most common weatherMain value
 		TriHourlyReport mostCommonTriHourReport = weatherMainAttributes.get(mostCommonWeatherMain);
-		tomorrow.setAvgWeatherId(mostCommonTriHourReport.getWeatherId());
-		tomorrow.setAvgWeatherMain(mostCommonTriHourReport.getWeatherMain());
-		tomorrow.setAvgWeatherDesc(mostCommonTriHourReport.getWeatherDesc());
-		tomorrow.setAvgWeatherIconId(mostCommonTriHourReport.getWeatherIconId());
+		day.setAvgWeatherId(mostCommonTriHourReport.getWeatherId());
+		day.setAvgWeatherMain(mostCommonTriHourReport.getWeatherMain());
+		day.setAvgWeatherDesc(mostCommonTriHourReport.getWeatherDesc());
+		day.setAvgWeatherIconId(mostCommonTriHourReport.getWeatherIconId());
 		
 		
 	   //Save calculated Data
 		//Get mean of temps.
-		avgTemp = avgTemp / tomorrow.getTriHourlyReports().size();
+		avgTemp = avgTemp / day.getTriHourlyReports().size();
 		//Save temps
-		tomorrow.setAvgTemp(avgTemp);
+		day.setAvgTemp(avgTemp);
+		day.setLowTemp(lowTemp);
+		day.setHighTemp(highTemp);
 		
 		//Save downfall probability (may be 0)
-		tomorrow.setDownfallProbability(highestDownfallProb);
+		day.setDownfallProbability(highestDownfallProb);
 		//Save downfall (vales may be 0)
-		tomorrow.setDownfallRainAmount(totalRain);
-		tomorrow.setDownfallSnowAmount(totalSnow);
+		day.setDownfallRainAmount(totalRain);
+		day.setDownfallSnowAmount(totalSnow);
 		
 		
-		//Save tomorrow report.
-		report.setTomorrow(tomorrow);
 		
-		return report;
+		
+		return day;
 	}
 
+	
+	
+	
+	
+	/* 
+	 * Gets the 5 day report for the from listArray (3-Hourly Reports from OpenWeather API)
+	 * 		To be stored in WeatherReport.fiveDays list 
+	 * 			Each instance in list will be a day (5 days total)
+	 * 				In each instance there will be generic data and triHourlyReports
+	 */
+	public static WeatherReport fiveDayReport(WeatherReport report, JsonNode listArray) {
+				
+			//Each instance in List will contain the list of triHourlyReports for that day.
+			List<List<JsonNode>> eachDayList = splitIntoDays(listArray, report);
+			
+			//FutureDayReport List to be saved to report.FiveDays list
+			List<FutureDayReport> fiveDays = new Vector<FutureDayReport>();
+			
+			int daysAhead = 1;
+			//Loop through each day in eachDayList
+			for (List<JsonNode> day : eachDayList) {
+				//Loop through each triHourlyData in day
+				FutureDayReport oneDay = new FutureDayReport();
+				//List of tri-hourly report (to be stored in TomorrowReport.triHourlyReports
+				List<TriHourlyReport> triHourlyReports = new Vector<TriHourlyReport>();
+				
+				for(JsonNode triHourlyData : day) {
+				
+					long localTimeMilli = (triHourlyData.path("dt").asInt() + report.getTomorrow().getTimezone()) * 1000L;
+					//If data is tomorrows data ( time >= tomorrow at midnight AND time <= midnight 2 days from now)
+					
+					TriHourlyReport triReport = new TriHourlyReport();
+					//Save 3-hourly data.
+					triReport.setTime(localTimeMilli);
+					//Save temp data
+					triReport.setTemp(triHourlyData.path("main").get("temp").asDouble());
+					triReport.setFeelsLikeTemp(triHourlyData.path("main").get("feels_like").asDouble());
+					triReport.setHumidity(triHourlyData.path("main").get("humidity").asInt());
+					//Save weather data.
+					triReport.setWeatherId(triHourlyData.path("weather").get(0).get("id").asInt());
+					triReport.setWeatherMain(triHourlyData.path("weather").get(0).get("main").asText());
+					triReport.setWeatherDesc(triHourlyData.path("weather").get(0).get("description").asText());
+					triReport.setWeatherIconId(triHourlyData.path("weather").get(0).get("icon").asText());
+					//Check for precipitation data and save data if it exists
+					triReport.setDownfallProbability(triHourlyData.get("pop").asDouble()*100);
+					//Returned JSON contains Rain precipitation data
+					if ( triHourlyData.has("rain") ){
+						//Data is for past hour
+						if( triHourlyData.path("rain").has("1h") ) {
+							triReport.setDownfallType("Rain (past 1 hr):");
+							triReport.setDownfallTotalAmount(triHourlyData.path("rain").path("1h").asDouble());
+						}
+						//Data is for past 3 hours
+						else {
+							triReport.setDownfallType("Rain (past 3 hr):");
+							triReport.setDownfallTotalAmount(triHourlyData.path("rain").path("3h").asDouble());
+						}
+					}
+					//Returned JSON contains Snow precipitation data
+					else if( triHourlyData.has("snow") ){
+						//Data is for past hour
+						if( triHourlyData.path("snow").has("1h") ) {
+							triReport.setDownfallType("Snow (past 1 hr):");
+							triReport.setDownfallTotalAmount(triHourlyData.path("snow").path("1h").asDouble());
+						}
+						//Data is for past 3 hours
+						else {
+							triReport.setDownfallType("Snow (past 3 hr):");
+							triReport.setDownfallTotalAmount(triHourlyData.path("snow").path("3h").asDouble());
+						}
+					}
+					//Returned JSON contains NO precipitation data
+					else {
+						triReport.setDownfallType("No precipitation");
+						triReport.setDownfallTotalAmount(0);
+					}
+					
+					triHourlyReports.add(triReport);
+						
+				}	
+				//Add the list of triHourlyReports to the oneDays list
+				oneDay.setTriHourlyReports(triHourlyReports);
+				//Add Generic data to oneDay
+				oneDay.setTimezone(report.getTomorrow().getTimezone());
+				oneDay.setDaysDate(daysAhead);
+				
+				//Save/Calc the day's summary data
+				oneDay = daysSummaryData(oneDay);
+				//Add that day to the list of 5-Days
+				fiveDays.add(oneDay);
+				
+				daysAhead++;
+			}
+			
+			//Create FiveDayReport to be saved to report.FiveDatReport
+			FiveDayReport fiveDayReport = new FiveDayReport();
+			fiveDayReport.setFiveDays(fiveDays);
+			fiveDayReport = calc5DayGenerics(fiveDayReport);
+			
+			//Save the 5-DayReport to report.FiveDays
+			report.setFiveDayReport(fiveDayReport);
+		
+			return report;
+		
+	}
 
-
+	
+	/*
+	 * Takes the 5 day listArray of triHourlyReports and split it into separate days
+	 * 		Each instance in List will contain the list of triHourlyReports for each day.
+	 */
+	public static List<List<JsonNode>> splitIntoDays(JsonNode listArray, WeatherReport report) {
+			
+			List<List<JsonNode>> eachDayList = new Vector<List<JsonNode>>();
+			List<JsonNode> oneDay = new Vector<JsonNode>();
+			
+			// Calculate the timestamp for 12:00 am tomorrow
+			LocalDateTime tomorrowMidnight = LocalDateTime.now(ZoneOffset.UTC).plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+			long tomorrowMidnightTimestamp = tomorrowMidnight.toInstant(ZoneOffset.UTC).toEpochMilli();
+						
+			
+			int daysAhead = 2;
+			for (JsonNode triHourlyData : listArray) {
+					//Get the next days Date (timestamp for 12am for the next day)
+					LocalDateTime oneDayAheadFromCurrInstance = LocalDateTime.now(ZoneOffset.UTC).plusDays(daysAhead).withHour(0).withMinute(0).withSecond(0).withNano(0);
+					long oneDayAheadFromCurrInstanceTimestamp = oneDayAheadFromCurrInstance.toInstant(ZoneOffset.UTC).toEpochMilli();
+							
+					//Get local time for triHourlyData instance
+					long localTimeMilli = (triHourlyData.path("dt").asInt() + report.getTomorrow().getTimezone()) * 1000L;
+					
+					//If data is from today (skip/do nothing)
+					if(localTimeMilli <= tomorrowMidnightTimestamp) {
+						//Skip / Do nothing
+					}
+					//If data is from current Days instance( time >= instance at midnight AND time <= midnight 2 days from instance)
+					else if(localTimeMilli >= tomorrowMidnightTimestamp && localTimeMilli <= oneDayAheadFromCurrInstanceTimestamp) {
+						oneDay.add(triHourlyData);
+					}
+					//Current Day is over (triHourlyData iteration is onto the next day)
+					else {
+						//Save data to eachDayList
+						eachDayList.add(oneDay);
+						oneDay = new Vector<JsonNode>();
+						//Add current instance to next day
+						System.out.println("---Else-NewDay----");
+						oneDay.add(triHourlyData);
+						//Move to next day in 5 day list
+						daysAhead++;
+					}
+					TriHourlyReport rep = new TriHourlyReport();
+					rep.setTime(localTimeMilli);
+					System.out.println(rep.getTimeWindow());
+			}
+		
+		//Add the last day
+		eachDayList.add(oneDay);
+		
+		return eachDayList;
+	}
+	
+	
+	
+	/*
+	 *  Calculated the generic values for the FiveDayReport (avg, high, low temp). 
+	 */
+	public static FiveDayReport calc5DayGenerics(FiveDayReport fiveDaysReport) {
+		double avgTemp = 0;     		
+		double lowTemp = fiveDaysReport.getFiveDays().get(0).getLowTemp();     		
+		double highTemp = fiveDaysReport.getFiveDays().get(0).getHighTemp();     		    
+		
+		for(FutureDayReport day : fiveDaysReport.getFiveDays()) {
+			avgTemp += day.getAvgTemp();
+			if(day.getLowTemp() < lowTemp) {
+				lowTemp = day.getLowTemp();
+			}
+			if(day.getHighTemp() > highTemp) {
+				highTemp = day.getHighTemp();
+			}
+		}
+		avgTemp = avgTemp / fiveDaysReport.getFiveDays().size();
+		
+		fiveDaysReport.setAvgTemp(avgTemp);
+		fiveDaysReport.setLowTemp(lowTemp);
+		fiveDaysReport.setHighTemp(highTemp);
+		
+		
+		return fiveDaysReport;
+	}
 }

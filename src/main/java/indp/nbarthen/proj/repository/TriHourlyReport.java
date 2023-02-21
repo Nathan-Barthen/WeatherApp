@@ -135,7 +135,7 @@ public class TriHourlyReport {
 
 	
 	@JsonIgnore
-	public String getDownfallAmountMmAndInches() {
+	public String getDownfallAmountInches() {
 		double downfallInches = downfallTotalAmount * 0.0393701; // conversion factor: 1 mm = 0.0393701 inches
 		downfallInches = Math.round(downfallInches * 100.0) / 100.0; // round to 2 decimal places
 		

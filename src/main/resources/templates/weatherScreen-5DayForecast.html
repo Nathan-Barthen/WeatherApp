@@ -8,7 +8,7 @@
 
 <link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-5Day-top.css">
 <link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-5Day-bottom.css">
-<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-advancedInfo.css">
+<link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-advancedInfo-5Day.css">
 <link rel="stylesheet" href="/cssStyles/weatherScreen/weatherScreen-links.css">
 
 </head>
@@ -30,7 +30,7 @@
                 <div id="top-columns">
                 	<div id="top-column1">
 	                	<div id="top-location">
-	                    	Location
+	                    	[[${report.getCity()}]]
 	                    	<input type="hidden" id="location" 	th:value="${report.getCity()}"/>
 	                    	<input type="hidden" id="id" 	th:value="${id}"/>
 	                    	<input type="hidden" id="locationIndex" 	th:value="${locationIndex}"/>
@@ -38,17 +38,18 @@
 		                <div id="top-time">
 		                    5-Day Forecast
 		                </div>
-		                <div id="top-date">
-		                    2/9/23 - 2/13/23
-		                </div>
+		               <div id="top-date">
+						   [[${fiveDayList.get(0).getDaysDateNoYear()}]] - [[${fiveDayList.get(fiveDayList.size()-1).getDaysDate()}]]
+						</div>
+
 		            </div>
 		            
 		            <div id="top-column2">
 	                	<div id="top-avgTemp">
-	                    	60<span id="degreesSymbol">&#176;</span>F
+	                    	[[${fiveDay.getAvgTemp()}]]<span id="degreesSymbol">&#176;</span>F
 		                </div>
 		                <div id="top-highLowTemp">
-	                    	71 - 49 <span id="degreesSymbol">&#176;</span>F
+	                    	[[${fiveDay.getLowTemp()}]] - [[${fiveDay.getHighTemp()}]] <span id="degreesSymbol">&#176;</span>F
 		                </div>
 		            </div>
 		            
@@ -72,165 +73,104 @@
             <div id="bottom">
             
             	<div id="bottom-DailyWeatherInfo1">
-            		<div id="bottom-DailyWeather-hourInfo">
+            		
+            		<div th:each="day, iterStat : ${fiveDayList}" th:if="${iterStat.index} &lt; 3" id="bottom-DailyWeather-hourInfo">
             			<div id="bottom-DailyWeather-hourInfo-box">
             			
             				<div id="bottom-DailyWeather-time">
-            					<b> 2/9/23 </b>
+            					<b> [[${day.getDaysDateForBottom()}]] </b>
             				</div>
             				
             				<div id="bottom-DailyWeather-tempAndIcon">
             					<div id="bottom-DailyWeather-temp">
-            						Temp
+            						[[${day.getAvgTemp()}]]<span id="degreesSymbol">&#176;</span>F
             					</div>
             					<div id="bottom-DailyWeather-iconAndDisc">
-            						<div id="bottom-DailyWeather-icon">
-            							<img id="bottom-DailyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
+            						<div id="bottom-3hourlyWeather-icon">
+            							<img id="bottom-3hourlyWeatherImg" th:src="@{'http://openweathermap.org/img/wn/' + ${day.getAvgWeatherIconId()} + '@2x.png'}"/>
+		                			</div>
             						<div id="bottom-DailyWeather-iconDisc">
-            							Rainy
+            							[[${day.getAvgWeatherMain()}]]
             						</div>
             					</div>
             				</div>
             				
 		            		<div id="bottom-DailyWeather-highLow">
-		            				High - Low
+		            				[[${day.getLowTemp()}]]<span id="degreesSymbol">&#176;</span> - [[${day.getHighTemp()}]]<span id="degreesSymbol">&#176;</span>
 		            		</div>	
 		            		<div id="bottom-DailyWeather-weatherDisc">
-		            				Light Rain
+		            				([[${day.getAvgWeatherDesc()}]])
 		            		</div>	
 		            		<div id="bottom-DailyWeather-downfall">
-		            				.2in Rain
+		            				
+		            				<span id="precipChance">Precip Chance: [[${day.getDownfallProbability()}]]% </span>
+			                		
+			                		<th:block th:if="${day.getDownfallRainAmount() != 0}">
+			                			<span id="downfall"> 
+			                			  Rain: [[${day.getDownfallAmountRainInches()}]] <br>
+										 </span>
+									</th:block>
+									<th:block th:if="${day.getDownfallSnowAmount() != 0}">
+			                			<span id="downfall"> 
+			                			  Snow: [[${day.getDownfallAmountSnowInches()}]]
+										 </span>
+									</th:block>
+									<th:block th:if="${day.getDownfallRainAmount() == 0 && day.getDownfallSnowAmount() == 0}">
+										 Precip: None
+									</th:block>
+		            				
 		            		</div>	
             			</div>
             		</div>
-            		<div id="bottom-DailyWeather-hourInfo">
-            			<div id="bottom-DailyWeather-hourInfo-box">
-            			
-            				<div id="bottom-DailyWeather-time">
-            					<b> 2/9/23 </b>
-            				</div>
-            				
-            				<div id="bottom-DailyWeather-tempAndIcon">
-            					<div id="bottom-DailyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-DailyWeather-iconAndDisc">
-            						<div id="bottom-DailyWeather-icon">
-            							<img id="bottom-DailyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-DailyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-DailyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-DailyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-DailyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
-            		<div id="bottom-DailyWeather-hourInfo">
-            			<div id="bottom-DailyWeather-hourInfo-box">
-            			
-            				<div id="bottom-DailyWeather-time">
-            					<b> 2/9/23 </b>
-            				</div>
-            				
-            				<div id="bottom-DailyWeather-tempAndIcon">
-            					<div id="bottom-DailyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-DailyWeather-iconAndDisc">
-            						<div id="bottom-DailyWeather-icon">
-            							<img id="bottom-DailyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-DailyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-DailyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-DailyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-DailyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
+            		
             	</div>
             	<div id="bottom-DailyWeatherInfo2">
-            		<div id="bottom-DailyWeather-hourInfo2">
+            		
+            		<div th:each="day, iterStat : ${fiveDayList}" th:if="${iterStat.index} &gt; 2" id="bottom-DailyWeather-hourInfo2">
             			<div id="bottom-DailyWeather-hourInfo-box">
             			
             				<div id="bottom-DailyWeather-time">
-            					<b> 2/9/23 </b>
+            					<b> [[${day.getDaysDateForBottom()}]] </b>
             				</div>
             				
             				<div id="bottom-DailyWeather-tempAndIcon">
             					<div id="bottom-DailyWeather-temp">
-            						Temp
+            						[[${day.getAvgTemp()}]]<span id="degreesSymbol">&#176;</span>F
             					</div>
             					<div id="bottom-DailyWeather-iconAndDisc">
-            						<div id="bottom-DailyWeather-icon">
-            							<img id="bottom-DailyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
+            						<div id="bottom-3hourlyWeather-icon">
+            							<img id="bottom-3hourlyWeatherImg" th:src="@{'http://openweathermap.org/img/wn/' + ${day.getAvgWeatherIconId()} + '@2x.png'}"/>
+		                			</div>
             						<div id="bottom-DailyWeather-iconDisc">
-            							Rainy
+            							[[${day.getAvgWeatherMain()}]]
             						</div>
             					</div>
             				</div>
             				
 		            		<div id="bottom-DailyWeather-highLow">
-		            				High - Low
+		            				[[${day.getLowTemp()}]]<span id="degreesSymbol">&#176;</span> - [[${day.getHighTemp()}]]<span id="degreesSymbol">&#176;</span>
 		            		</div>	
 		            		<div id="bottom-DailyWeather-weatherDisc">
-		            				Light Rain
+		            				([[${day.getAvgWeatherDesc()}]])
 		            		</div>	
 		            		<div id="bottom-DailyWeather-downfall">
-		            				.2in Rain
-		            		</div>	
-            			</div>
-            		</div>
-            		<div id="bottom-DailyWeather-hourInfo2">
-            			<div id="bottom-DailyWeather-hourInfo-box">
-            			
-            				<div id="bottom-DailyWeather-time">
-            					<b> 2/9/23 </b>
-            				</div>
-            				
-            				<div id="bottom-DailyWeather-tempAndIcon">
-            					<div id="bottom-DailyWeather-temp">
-            						Temp
-            					</div>
-            					<div id="bottom-DailyWeather-iconAndDisc">
-            						<div id="bottom-DailyWeather-icon">
-            							<img id="bottom-DailyWeatherImg" src="http://openweathermap.org/img/wn/10d@2x.png">
-            						</div>
-            						<div id="bottom-DailyWeather-iconDisc">
-            							Rainy
-            						</div>
-            					</div>
-            				</div>
-            				
-		            		<div id="bottom-DailyWeather-highLow">
-		            				High - Low
-		            		</div>	
-		            		<div id="bottom-DailyWeather-weatherDisc">
-		            				Light Rain
-		            		</div>	
-		            		<div id="bottom-DailyWeather-downfall">
-		            				.2in Rain
+		            				
+		            				<span id="precipChance">Precip Chance: [[${day.getDownfallProbability()}]]% </span>
+			                		
+			                		<th:block th:if="${day.getDownfallRainAmount() != 0}">
+			                			<span id="downfall"> 
+			                			  Rain: [[${day.getDownfallAmountRainMmAndInches()}]] <br>
+										 </span>
+									</th:block>
+									<th:block th:if="${day.getDownfallSnowAmount() != 0}">
+			                			<span id="downfall"> 
+			                			  Snow: [[${day.getDownfallAmountSnowMmAndInches()}]]
+										 </span>
+									</th:block>
+									<th:block th:if="${day.getDownfallRainAmount() == 0 && day.getDownfallSnowAmount() == 0}">
+										 Precip: None
+									</th:block>
+		            				
 		            		</div>	
             			</div>
             		</div>
@@ -308,7 +248,7 @@
 	<script src="/javaScript/entersLocation.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script src="/javaScript/advancedInfo-Popup.js"></script>
-	<script src="/javaScript/advandedInfo-Graph.js"></script>
+	<script src="/javaScript/advandedInfo-5Day-Graph.js"></script>
 	<script src="/javaScript/clicks-Today.js"></script>
 	<script src="/javaScript/clicks-Tomorrow.js"></script>
 	
