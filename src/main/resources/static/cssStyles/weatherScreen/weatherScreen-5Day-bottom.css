@@ -136,7 +136,11 @@
 	    align-items: center;
 	    text-align: center;
 	    color: black;
-	    font-size: 35px;
+	    font-size: 34px;
+	    
+	    white-space: nowrap;
+		overflow: visible;
+		text-overflow: ellipsis;
   }
   #bottom-DailyWeather-downfall {
   		display: flex;

@@ -1,12 +1,11 @@
 /**
  * Used to control / create the temperature line graph / chart. 
  * It is a chart with 8 values. One for each 3-hour window in a day.
- * Also lists the high(s) and low(s) for those time windows as well.
  */
 		
 		var timeWindows = [];
 		var temps = [];
-		console.log("Hello");
+		
 		// Loop over the Java object and push timeWindow and temp values into arrays
 		document.querySelectorAll('#bottom-3hourlyWeather-time').forEach(function(element, index) {
 			  timeWindows.push(element.innerText);

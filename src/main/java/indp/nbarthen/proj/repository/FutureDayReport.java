@@ -98,7 +98,8 @@ public class FutureDayReport {
 		SimpleDateFormat outputFormat = new SimpleDateFormat("M/d/yy");
 		
 		Date date = inputFormat.parse(dateString);
-		String formattedDate = outputFormat.format(date);
+		date = new SimpleDateFormat("M/d/yy").parse(outputFormat.format(date));
+		String formattedDate = new SimpleDateFormat("EEE, MMM d").format(date);
 		
 		return formattedDate;
 	}
@@ -229,7 +230,7 @@ public class FutureDayReport {
 		downfallInches = Math.round(downfallInches * 100.0) / 100.0; // round to 2 decimal places
 		
 		if(downfallInches == 0.00) {
-			downfallInches = Math.round((downfallSnowAmount * 0.0393701) * 1000.0) / 1000.0; // round to 3 decimal places
+			downfallInches = Math.round((downfallRainAmount * 0.0393701) * 1000.0) / 1000.0; // round to 3 decimal places
 		}
 		
 		return Double.toString(downfallInches) + "in";
@@ -251,7 +252,7 @@ public class FutureDayReport {
 		double downfallInches = downfallSnowAmount * 0.0393701; // conversion factor: 1 mm = 0.0393701 inches
 		downfallInches = Math.round(downfallInches * 100.0) / 100.0; // round to 2 decimal places
 		
-		return Double.toString(downfallInches) + "in (" + Double.toString(downfallRainAmount) + "mm)";
+		return Double.toString(downfallInches) + "in (" + Double.toString(downfallSnowAmount) + "mm)";
 		
 	}
 	

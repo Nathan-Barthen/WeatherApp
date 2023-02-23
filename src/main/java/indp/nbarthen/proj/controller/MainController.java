@@ -157,7 +157,9 @@ public class MainController {
 			 
 			//Gets the current weather Info
 			 report = GetTodaysWeather.todaysWeatherReport(report, Integer.parseInt(locationIndex));
-			 
+			//Gets the data for tomorrow and the 5 day report.
+		 	 report = GetFutureWeather.futureWeatherReport(report, Integer.parseInt(locationIndex));
+		 	 
 			 //Redirect if there is an api error	
 			 if(!report.getApiError().isEmpty()) {
 			 		//Get API error message and return to homePage.html
@@ -188,18 +190,13 @@ public class MainController {
 		 	 WeatherReport report = weatherRepository.findById(id).get();
 		 	
 		 	 
-		 	 
-		 	 //Gets the data for tomorrow and the 5 day report.
-		 	 report = GetFutureWeather.futureWeatherReport(report, Integer.parseInt(locationIndex));
-		 	 
 			 model.addAttribute("report", report);
 			 model.addAttribute("tomorrow", report.getTomorrow());
 			 
 			 model.addAttribute("locationIndex", locationIndex);
 			 model.addAttribute("id", id);
 		 
-			//Update repository w/ added information
-			 weatherRepository.save(report);
+			
 			 
 			 return "weatherScreen-Tomorrow";
 	    }

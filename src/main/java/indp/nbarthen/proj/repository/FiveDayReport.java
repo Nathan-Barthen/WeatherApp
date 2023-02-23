@@ -11,6 +11,8 @@ import jakarta.persistence.OneToOne;
 import java.util.List;
 import java.util.Vector;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class FiveDayReport {
 	
@@ -24,6 +26,10 @@ public class FiveDayReport {
 	private double avgTemp;     		//Calculated from FutureDayReport Values
 	private double lowTemp;     		//Calculated from FutureDayReport Values
 	private double highTemp;     		//Calculated from FutureDayReport Values
+	
+	private double fiveDayDownfallProb;
+	private double fiveDayDownfallRainAmount;
+	private double fiveDayDownfallSnowAmount;
 	
 	private String apiError;
 	
@@ -81,6 +87,67 @@ public class FiveDayReport {
 		this.highTemp = highTemp;
 	}
 
+	public int getFiveDayDownfallProb() {
+			//Rounded to int / whole number.
+			return (int) fiveDayDownfallProb;
+	}
+
+
+	public void setFiveDayDownfallProb(double fiveDayDownfallProb) {
+		this.fiveDayDownfallProb = fiveDayDownfallProb;
+	}
+
+
+	public double getFiveDayDownfallRainAmount() {
+		return fiveDayDownfallRainAmount;
+	}
+
+
+	public void setFiveDayDownfallRainAmount(double fiveDayDownfallRainAmount) {
+		this.fiveDayDownfallRainAmount = fiveDayDownfallRainAmount;
+	}
+
+
+	public double getFiveDayDownfallSnowAmount() {
+		return fiveDayDownfallSnowAmount;
+	}
+
+
+	public void setFiveDayDownfallSnowAmount(double fiveDayDownfallSnowAmount) {
+		this.fiveDayDownfallSnowAmount = fiveDayDownfallSnowAmount;
+	}
+
+
+	
+	@JsonIgnore
+	public String getDownfallAmountRainMmAndInches() {
+		double downfallInches = fiveDayDownfallRainAmount * 0.0393701; // conversion factor: 1 mm = 0.0393701 inches
+		downfallInches = Math.round(downfallInches * 100.0) / 100.0; // round to 2 decimal places
+		
+		if(downfallInches == 0.00) {
+			downfallInches = Math.round((fiveDayDownfallRainAmount * 0.0393701) * 1000.0) / 1000.0; // round to 3 decimal places
+		}
+		
+		return Double.toString(downfallInches) + "in (" + Double.toString(fiveDayDownfallRainAmount) + "mm)";
+		
+	}
+
+	@JsonIgnore
+	public String getDownfallAmountSnowMmAndInches() {
+		double downfallInches = fiveDayDownfallSnowAmount * 0.0393701; // conversion factor: 1 mm = 0.0393701 inches
+		downfallInches = Math.round(downfallInches * 100.0) / 100.0; // round to 2 decimal places
+		
+		if(downfallInches == 0.00) {
+			downfallInches = Math.round((fiveDayDownfallSnowAmount * 0.0393701) * 1000.0) / 1000.0; // round to 3 decimal places
+		}
+		
+		return Double.toString(downfallInches) + "in (" + Double.toString(fiveDayDownfallSnowAmount) + "mm)";
+		
+	}
+
+	
+	
+	
 		public String getApiError() {
 			return apiError;
 		}

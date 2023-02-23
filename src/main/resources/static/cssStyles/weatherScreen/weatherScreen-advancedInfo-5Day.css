@@ -84,52 +84,34 @@
 	    border-right: 3px solid black;
 	}
 		#hiddenContent-avgTempValues1 {
-			width: 11.5%;
+			width: 20%;
 		  	justify-content: center;
 		    align-items: center;
-		    padding-left: 30px;
+		    padding-left: 35px;
 		}
 		#hiddenContent-avgTempValues2 {
-			width: 11.5%;
+			width: 20%;
 		  	justify-content: center;
 		    align-items: center;
 		    padding-left: 12px;
 		}
 		#hiddenContent-avgTempValues3 {
-			width: 12.5%;
+			width: 20%;
 		  	justify-content: center;
 		    align-items: center;
-		    padding-left: 10px;
+		    padding-left: 17px;
 		}
 		#hiddenContent-avgTempValues4 {
-			width: 12.5%;
+			width: 20%;
 		  	justify-content: center;
 		    align-items: center;
-		    padding-left: 0px;
+		    padding-left: 15px;
 		}
 		#hiddenContent-avgTempValues5 {
-			width: 12.5%;
+			width: 10%;
 		  	justify-content: center;
 		    align-items: center;
-		    padding-left: 0px;
-		}
-		#hiddenContent-avgTempValues6 {
-			width: 12.5%;
-		  	justify-content: center;
-		    align-items: center;
-		    padding-left: 0px;
-		}
-		#hiddenContent-avgTempValues7 {
-			width: 12.5%;
-		  	justify-content: center;
-		    align-items: center;
-		    padding-left: 0px;
-		}
-		#hiddenContent-avgTempValues8 {
-		  	justify-content: center;
-		    align-items: center;
-		    padding-left: 0px;
-		    
+		    padding-left: 5px;
 		}
 	
 	#hiddenContent-otherInfo {
@@ -147,7 +129,7 @@
 		font-size: 45px;
 	}
 	#hiddenContent-otherInfo-col1 {
-		width: 50%;
+		width: 55%;
 		height: 90%;
 		justify-content: center;
 	    align-items: center;
@@ -155,15 +137,16 @@
 	    padding-left: 30px;
 		margin: auto;
 		margin-top: 20px;
+		border-right: 1px solid black;
 	}
 	#hiddenContent-otherInfo-col2 {
-		width: 50%;
+		width: 45%;
 		height: 90%;
 		justify-content: center;
 	    align-items: center;
 	    text-align: start;
 	    padding-left: 30px;
-	    border-left: 1px solid black;
+	    
 	    margin: auto;
 		margin-top: 20px;
 	}

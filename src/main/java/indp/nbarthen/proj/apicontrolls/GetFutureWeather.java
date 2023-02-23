@@ -229,7 +229,7 @@ public class GetFutureWeather {
 			    weatherMainAttributes.put(weatherMain, triHourReport);
 			}
 			
-			//Save highest downfall probability
+			//Save highest downfall probability			
 			if( triHourReport.getDownfallProbability() > highestDownfallProb) {
 				highestDownfallProb = triHourReport.getDownfallProbability();
 			}
@@ -367,6 +367,7 @@ public class GetFutureWeather {
 				oneDay.setTriHourlyReports(triHourlyReports);
 				//Add Generic data to oneDay
 				oneDay.setTimezone(report.getTomorrow().getTimezone());
+				oneDay.setCityPopulation(report.getTomorrow().getCityPopulation());
 				oneDay.setDaysDate(daysAhead);
 				
 				//Save/Calc the day's summary data
@@ -381,7 +382,6 @@ public class GetFutureWeather {
 			FiveDayReport fiveDayReport = new FiveDayReport();
 			fiveDayReport.setFiveDays(fiveDays);
 			fiveDayReport = calc5DayGenerics(fiveDayReport);
-			
 			//Save the 5-DayReport to report.FiveDays
 			report.setFiveDayReport(fiveDayReport);
 		
@@ -427,14 +427,10 @@ public class GetFutureWeather {
 						eachDayList.add(oneDay);
 						oneDay = new Vector<JsonNode>();
 						//Add current instance to next day
-						System.out.println("---Else-NewDay----");
 						oneDay.add(triHourlyData);
 						//Move to next day in 5 day list
 						daysAhead++;
 					}
-					TriHourlyReport rep = new TriHourlyReport();
-					rep.setTime(localTimeMilli);
-					System.out.println(rep.getTimeWindow());
 			}
 		
 		//Add the last day
@@ -446,13 +442,19 @@ public class GetFutureWeather {
 	
 	
 	/*
-	 *  Calculated the generic values for the FiveDayReport (avg, high, low temp). 
+	 *  Calculated the generic values for the FiveDayReport (avg, high, low temp), (downfallProb, snow/rain downfall).
 	 */
 	public static FiveDayReport calc5DayGenerics(FiveDayReport fiveDaysReport) {
 		double avgTemp = 0;     		
 		double lowTemp = fiveDaysReport.getFiveDays().get(0).getLowTemp();     		
-		double highTemp = fiveDaysReport.getFiveDays().get(0).getHighTemp();     		    
+		double highTemp = fiveDaysReport.getFiveDays().get(0).getHighTemp();    
 		
+		double fiveDayDownfallProb = 0;
+		double fiveDayDownfallRainAmount = 0;
+		double fiveDayDownfallSnowAmount = 0;
+		
+		
+		//Loop through days. Save temp data and downfall data
 		for(FutureDayReport day : fiveDaysReport.getFiveDays()) {
 			avgTemp += day.getAvgTemp();
 			if(day.getLowTemp() < lowTemp) {
@@ -461,12 +463,25 @@ public class GetFutureWeather {
 			if(day.getHighTemp() > highTemp) {
 				highTemp = day.getHighTemp();
 			}
+			
+			//Save highest downfall probability
+			if( day.getDownfallProbability() > fiveDayDownfallProb) {
+				fiveDayDownfallProb = day.getDownfallProbability();
+			}
+			//Save downfall amounts (may be 0)
+			fiveDayDownfallRainAmount += day.getDownfallRainAmount();
+			fiveDayDownfallSnowAmount += day.getDownfallSnowAmount();
 		}
+		
+		
 		avgTemp = avgTemp / fiveDaysReport.getFiveDays().size();
 		
 		fiveDaysReport.setAvgTemp(avgTemp);
 		fiveDaysReport.setLowTemp(lowTemp);
 		fiveDaysReport.setHighTemp(highTemp);
+		fiveDaysReport.setFiveDayDownfallProb(fiveDayDownfallProb);
+		fiveDaysReport.setFiveDayDownfallRainAmount(fiveDayDownfallRainAmount);
+		fiveDaysReport.setFiveDayDownfallSnowAmount(fiveDayDownfallSnowAmount);
 		
 		
 		return fiveDaysReport;
