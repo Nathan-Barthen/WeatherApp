@@ -96,7 +96,7 @@
             				</div>
             				
 		            		<div id="bottom-DailyWeather-highLow">
-		            				[[${day.getLowTemp()}]]<span id="degreesSymbol">&#176;</span> - [[${day.getHighTemp()}]]<span id="degreesSymbol">&#176;</span>
+		            				[[${day.getLowTemp()}]]<span id="degreesSymbol">&#176;</span>- [[${day.getHighTemp()}]]<span id="degreesSymbol">&#176;</span>
 		            		</div>	
 		            		<div id="bottom-DailyWeather-weatherDisc">
 		            				([[${day.getAvgWeatherDesc()}]])
@@ -148,7 +148,7 @@
             				</div>
             				
 		            		<div id="bottom-DailyWeather-highLow">
-		            				[[${day.getLowTemp()}]]<span id="degreesSymbol">&#176;</span> - [[${day.getHighTemp()}]]<span id="degreesSymbol">&#176;</span>
+		            				[[${day.getLowTemp()}]]<span id="degreesSymbol">&#176;</span>- [[${day.getHighTemp()}]]<span id="degreesSymbol">&#176;</span>
 		            		</div>	
 		            		<div id="bottom-DailyWeather-weatherDisc">
 		            				([[${day.getAvgWeatherDesc()}]])
@@ -159,12 +159,12 @@
 			                		
 			                		<th:block th:if="${day.getDownfallRainAmount() != 0}">
 			                			<span id="downfall"> 
-			                			  Rain: [[${day.getDownfallAmountRainMmAndInches()}]] <br>
+			                			  Rain: [[${day.getDownfallAmountRainInches()}]] <br>
 										 </span>
 									</th:block>
 									<th:block th:if="${day.getDownfallSnowAmount() != 0}">
 			                			<span id="downfall"> 
-			                			  Snow: [[${day.getDownfallAmountSnowMmAndInches()}]]
+			                			  Snow: [[${day.getDownfallAmountSnowInches()}]]
 										 </span>
 									</th:block>
 									<th:block th:if="${day.getDownfallRainAmount() == 0 && day.getDownfallSnowAmount() == 0}">
@@ -185,31 +185,27 @@
 						  <canvas id="temp-graph"></canvas>
 						</div>
 						<div id="hiddenContent-tempValuesDiv">
-							<div id="hiddenContent-avgTempValues1">20&#176;</div>
-							<div id="hiddenContent-avgTempValues2">22&#176;</div>
-							<div id="hiddenContent-avgTempValues3">24&#176;</div>
-							<div id="hiddenContent-avgTempValues4">25&#176;</div>
-							<div id="hiddenContent-avgTempValues5">26&#176;</div>
-							<div id="hiddenContent-avgTempValues6">24&#176;</div>
-							<div id="hiddenContent-avgTempValues7">22&#176;</div>
-							<div id="hiddenContent-avgTempValues8">20&#176;</div>
+							 <div th:each="day, i : ${fiveDayList}" th:id="'hiddenContent-avgTempValues' + ${i.index + 1}">
+						        <span id="hiddenAvgTemp" th:text="${day.getAvgTemp()}"></span>&#176;
+						        <input type="hidden" id="hiddenHighTemp" th:value="${day.getHighTemp()}"/>
+						        <input type="hidden" id="hiddenLowTemp" th:value="${day.getLowTemp()}"/>
+						        <input type="hidden" id="hiddenDate" th:value="${day.getDaysDateForBottom()}"/>
+						    </div>
 						</div>
 						
 						<div id="hiddenContent-otherInfo">
 							<div id="hiddenContent-otherInfo-col1">
 								<div id="hiddenContent-otherInfo-col1-info">
-									Real Feel: 54&#176;F <br>
-									Wind  <br>
-									Other...
+									Chance of precip: [[${fiveDay.getFiveDayDownfallProb()}]]% <br>
+									&nbsp;&nbsp;Rain  [[${fiveDay.getDownfallAmountRainMmAndInches()}]]<br>
+									&nbsp;&nbsp;Snow  [[${fiveDay.getDownfallAmountSnowMmAndInches()}]]
 									                  
 			                	</div>
 			                	
 			                </div>
 			                <div id="hiddenContent-otherInfo-col2">
 			                	<div id="hiddenContent-otherInfo-col2-info">
-									Real Feel: 54&#176;F <br>
-									Wind  <br>
-									Other...
+									Population: [[${fiveDayList.get(0).getCityPopulation()}]]<br>
 									                  
 			                	</div>
 	                	
