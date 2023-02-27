@@ -36,10 +36,10 @@
 	                    	<input type="hidden" id="locationIndex" 	th:value="${locationIndex}"/>
 		                </div>
 		                <div id="top-time">
-		                    [[${currentTime}]]
+		                    [[${today.getCurrTime()}]]
 		                </div>
 		                <div id="top-date">
-		                    [[${currentDate}]]
+		                    [[${today.getCurrDate()}]]
 		                </div>
 		            </div>
 		            
@@ -83,7 +83,7 @@
             	<div id="bottom-currentWeatherInfo">
             	
 	                <div id="bottom-currentWeatherInfo-col1">
-	                	<span id="bottom-currentWeatherInfo-col1-title"> <b>[[${currentTime}]]</b> </span>
+	                	<span id="bottom-currentWeatherInfo-col1-title"> <b>[[${today.getCurrTime()}]]</b> </span>
 						<div id="bottom-currentWeatherInfo-col1-info">
 							Real Feel: [[${today.getCurrFeelsLike()}]]&#176;F                  
 	                	</div>

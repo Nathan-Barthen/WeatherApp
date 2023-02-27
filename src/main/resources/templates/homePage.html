@@ -23,6 +23,12 @@
                 <div id="top-title">
                     Check Today's Weather
                 </div>
+                <div id="seeSample">
+                    <form method="post" th:action="@{/weatherReport/GetSample}">
+                         <input type="submit" value="Sample" />
+                    </form>
+                </div>
+                
                 <div id="top-time">
                     [[${currentDate}]]
                 </div>

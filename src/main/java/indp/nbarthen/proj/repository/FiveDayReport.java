@@ -128,7 +128,9 @@ public class FiveDayReport {
 			downfallInches = Math.round((fiveDayDownfallRainAmount * 0.0393701) * 1000.0) / 1000.0; // round to 3 decimal places
 		}
 		
-		return Double.toString(downfallInches) + "in (" + Double.toString(fiveDayDownfallRainAmount) + "mm)";
+		double downfallMmRounded =  Math.round(fiveDayDownfallRainAmount * 100.0) / 100.0; // round to 2 decimal places
+		
+		return Double.toString(downfallInches) + "in (" + Double.toString(downfallMmRounded) + "mm)";
 		
 	}
 
@@ -141,7 +143,9 @@ public class FiveDayReport {
 			downfallInches = Math.round((fiveDayDownfallSnowAmount * 0.0393701) * 1000.0) / 1000.0; // round to 3 decimal places
 		}
 		
-		return Double.toString(downfallInches) + "in (" + Double.toString(fiveDayDownfallSnowAmount) + "mm)";
+		double downfallMmRounded =  Math.round(fiveDayDownfallSnowAmount * 100.0) / 100.0; // round to 2 decimal places
+		
+		return Double.toString(downfallInches) + "in (" + Double.toString(downfallMmRounded) + "mm)";
 		
 	}
 

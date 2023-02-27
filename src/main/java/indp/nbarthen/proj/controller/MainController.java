@@ -2,8 +2,10 @@ package indp.nbarthen.proj.controller;
 
 
 import indp.nbarthen.proj.apicontrolls.*;
+import indp.nbarthen.proj.futuredata.GetFutureWeather;
 import indp.nbarthen.proj.repository.WeatherReport;
 import indp.nbarthen.proj.repository.WeatherRepository;
+import indp.nbarthen.proj.sample.SaveSampleReport;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.IOException;
@@ -146,14 +148,10 @@ public class MainController {
 	    public String getTodaysReport(@PathVariable("id") String id, @PathVariable("locationIndex") String locationIndex, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
 		 	 WeatherReport report = weatherRepository.findById(id).get();
 		 	 
-		 	 //Get apiKey (user for OpenWeather precipitation+cloud map)
+		 	 //Get apiKey (used for OpenWeather precipitation+cloud map)
 		 	 Dotenv dotenv = Dotenv.load();
 			 String apiKey = dotenv.get("API_KEY");	
-		 	//Get current time & date
-			 SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
-			 SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
-			 Date today = new Date();
-			 Date date = new Date();
+		 	
 			 
 			//Gets the current weather Info
 			 report = GetTodaysWeather.todaysWeatherReport(report, Integer.parseInt(locationIndex));
@@ -167,13 +165,12 @@ public class MainController {
 			 		return "redirect:/";
 			 }
 			 
+			 
 			 model.addAttribute("report", report);
 			 model.addAttribute("locationIndex", locationIndex);
 			 model.addAttribute("id", id);
 			 model.addAttribute("apiKey", apiKey);
 			 model.addAttribute("today", report.getToday());
-			 model.addAttribute("currentTime", timeFormat.format(date).toLowerCase());
-			 model.addAttribute("currentDate", dateFormat.format(today));
 		 	
 			 //Update repository w/ added information
 			 weatherRepository.save(report);
@@ -183,7 +180,7 @@ public class MainController {
 
 	 
 	 /*  weatherScreen-Today.html
-	  * 	Display the Today's weather information for the city / zip inputed by the user.
+	  * 	Display the weather for tomorrow.
 	  */
 	 @RequestMapping({"weatherReport/{id}/{locationIndex}/{location}/tomorrow"})
 	    public String getTomorrowsReport(@PathVariable("id") String id, @PathVariable("locationIndex") String locationIndex, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
@@ -200,6 +197,11 @@ public class MainController {
 			 
 			 return "weatherScreen-Tomorrow";
 	    }
+	 
+	 
+	 /* weatherScreen-5DayForecast.html
+	  * 	Display the weather for the 5-Day forecast.
+	  */
 	 @RequestMapping({"weatherReport/{id}/{locationIndex}/{location}/5-DayForecast"})
 	    public String get5DayReport(@PathVariable("id") String id, @PathVariable("locationIndex") String locationIndex, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
 		 	 WeatherReport report = weatherRepository.findById(id).get();
@@ -220,6 +222,65 @@ public class MainController {
 	    }
 	 
 	 
+	 
+	 /* 
+	  *   Get the Sample report/data from file 
+	  *   	(used if user did not want to get their own API Key)
+	  */
+	 @RequestMapping({"weatherReport/GetSample"})
+	    public String getSample(@PathVariable("id") String id, @PathVariable("locationIndex") String locationIndex, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
+		 	 
+		 	WeatherReport report = new WeatherReport();
+		 	
+		 	//GET SAMPLE REPORT
+			 	
+			 //If API call returned an error
+			 if(!report.getApiError().isEmpty()) {
+			 	//Get API error message and return to homePage.html
+			 	userSearchPopupError = report.getApiError();
+			 	return "redirect:/";
+			 }
+			 	
+			 weatherRepository.save(report);
+			 return "redirect:/weatherReport/" + report.getId() + "/" + ((report.getLocations().size())-1) + "/" + report.getCity() + "/today";
+		 	
+		 
+	    }
+	 /*  weatherScreen-Today.html 
+	  * 	Display the Sample data if user did not want to get their own API Key
+	  */
+	 @RequestMapping({"weatherReport/sample/today"})
+	    public String getTodaysSampleReport(@PathVariable("id") String id, @PathVariable("locationIndex") String locationIndex, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
+		 	 WeatherReport report = weatherRepository.findById(id).get();
+		 	 
+		 	 //Get apiKey (used for OpenWeather precipitation+cloud map)
+		 	 Dotenv dotenv = Dotenv.load();
+			 String apiKey = dotenv.get("API_KEY");	
+		 	
+			 
+			//Gets the current weather Info
+			 report = GetTodaysWeather.todaysWeatherReport(report, Integer.parseInt(locationIndex));
+			//Gets the data for tomorrow and the 5 day report.
+		 	 report = GetFutureWeather.futureWeatherReport(report, Integer.parseInt(locationIndex));
+		 	 
+			 //Redirect if there is an api error	
+			 if(!report.getApiError().isEmpty()) {
+			 		//Get API error message and return to homePage.html
+			 		userSearchPopupError = report.getApiError();
+			 		return "redirect:/";
+			 }
+			 
+			 model.addAttribute("report", report);
+			 model.addAttribute("locationIndex", locationIndex);
+			 model.addAttribute("id", id);
+			 model.addAttribute("apiKey", apiKey);
+			 model.addAttribute("today", report.getToday());
+		 	
+			 //Update repository w/ added information
+			 weatherRepository.save(report);
+			 
+	        return "weatherScreen-Today";
+	    }
 	
 	 
 	 	

@@ -41,6 +41,7 @@ public class HandleUserInput {
 		
 		//Array: index 1 = city. index 2 = stateAbriv
 		String[] cityState = new String[2];
+		cityStateZip = cityStateZip.replace(",", "");
 		
 	  //Take user's input, calculate zip AND/OR city & state abbreviation
 			String[] words = cityStateZip.split(" ");

@@ -6,6 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Vector;
 
@@ -278,6 +281,38 @@ public class TodayReport {
 		this.cityPopulation = cityPopulation;
 	}
 
+	
+	@JsonIgnore
+	public String getCurrTime() {
+			long timezoneMilli = timezone * 1000L;
+			//Get current time in users timezone (milliseconds)
+			long timeMilli = (time * 1000L) + timezoneMilli;
+			 // Convert Unix milliseconds to ZonedDateTime
+		    ZonedDateTime dateTime = ZonedDateTime.ofInstant(
+		        java.time.Instant.ofEpochMilli(timeMilli), ZoneId.of("UTC"));
+		    
+		    // Format the date time using a DateTimeFormatter
+		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm");
+		    String formattedDateTime = dateTime.format(formatter);
+		    
+		    return formattedDateTime;
+	}
+	
+	@JsonIgnore
+	public String getCurrDate() {
+			long timezoneMilli = timezone * 1000L;
+			//Get current time in users timezone (milliseconds)
+			long timeMilli = (time * 1000L) + timezoneMilli;
+			 // Convert Unix milliseconds to ZonedDateTime
+		    ZonedDateTime dateTime = ZonedDateTime.ofInstant(
+		        java.time.Instant.ofEpochMilli(timeMilli), ZoneId.of("UTC"));
+		    
+		    // Format the date time using a DateTimeFormatter
+		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+		    String formattedDate = dateTime.format(formatter);
+		    
+		    return formattedDate;
+	}
 	
 	@JsonIgnore
 	public String getSolarNoon() {
