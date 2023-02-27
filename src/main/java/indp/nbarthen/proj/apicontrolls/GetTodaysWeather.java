@@ -17,7 +17,7 @@ public class GetTodaysWeather {
 	
 	/*Gets the today's information from the API
 	 * 	Information is stored in report and returned by the function
-	 * 	locationIndex is used to access the the index inside if report.getLocations()
+	 * 	locationIndex is used to access the the index inside of report.getLocations()
 	 * 		-Since the city+state query returns 5 locations, 
 	 *       the index is remember so we use the location selected by the user.
 	 */
@@ -43,7 +43,9 @@ public class GetTodaysWeather {
 			
 			TodayReport todayReport = new TodayReport();
 			
-			
+			//Save Lon, Lat to report
+			report.setLon(report.getLocations().get(locationIndex).getLon());
+			report.setLat(report.getLocations().get(locationIndex).getLat());
 			//Save weather related Data.
 			todayReport.setWeatherId(weatherReportRoot.path("weather").get(0).path("id").asInt());
 			todayReport.setWeatherMain(weatherReportRoot.path("weather").get(0).path("main").asText());

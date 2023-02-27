@@ -197,9 +197,12 @@
 							<div id="hiddenContent-otherInfo-col1">
 								<div id="hiddenContent-otherInfo-col1-info">
 									Chance of precip: [[${fiveDay.getFiveDayDownfallProb()}]]% <br>
-									&nbsp;&nbsp;Rain  [[${fiveDay.getDownfallAmountRainMmAndInches()}]]<br>
-									&nbsp;&nbsp;Snow  [[${fiveDay.getDownfallAmountSnowMmAndInches()}]]
-									                  
+									<th:block th:if="${fiveDay.getFiveDayDownfallRainAmount() != 0}">
+										&nbsp;&nbsp;Rain  [[${fiveDay.getDownfallAmountRainMmAndInches()}]]<br>
+									</th:block>
+									<th:block th:if="${fiveDay.getFiveDayDownfallSnowAmount() != 0}">
+										&nbsp;&nbsp;Snow  [[${fiveDay.getDownfallAmountSnowMmAndInches()}]]
+									 </th:block>            
 			                	</div>
 			                	
 			                </div>
