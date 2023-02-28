@@ -3,8 +3,10 @@ package indp.nbarthen.proj.controller;
 
 import indp.nbarthen.proj.apicontrolls.*;
 import indp.nbarthen.proj.futuredata.GetFutureWeather;
+import indp.nbarthen.proj.repository.FutureDayReport;
 import indp.nbarthen.proj.repository.WeatherReport;
 import indp.nbarthen.proj.repository.WeatherRepository;
+import indp.nbarthen.proj.sample.GetSampleInfo;
 import indp.nbarthen.proj.sample.SaveSampleReport;
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -152,11 +154,17 @@ public class MainController {
 		 	 Dotenv dotenv = Dotenv.load();
 			 String apiKey = dotenv.get("API_KEY");	
 		 	
-			 
-			//Gets the current weather Info
-			 report = GetTodaysWeather.todaysWeatherReport(report, Integer.parseInt(locationIndex));
-			//Gets the data for tomorrow and the 5 day report.
-		 	 report = GetFutureWeather.futureWeatherReport(report, Integer.parseInt(locationIndex));
+			 //If report is not a Sample. Execute.
+			 if(report.getState() == null || !report.getState().contains("Sample")) {
+				//Gets the current weather Info
+				 report = GetTodaysWeather.todaysWeatherReport(report, Integer.parseInt(locationIndex));
+				//Gets the data for tomorrow and the 5 day report.
+			 	 report = GetFutureWeather.futureWeatherReport(report, Integer.parseInt(locationIndex));
+			 	//Update repository w/ added information
+				 weatherRepository.save(report);
+				 
+				 //SaveSampleReport.storeReportToFile(report);  
+			 }
 		 	 
 			 //Redirect if there is an api error	
 			 if(!report.getApiError().isEmpty()) {
@@ -172,8 +180,7 @@ public class MainController {
 			 model.addAttribute("apiKey", apiKey);
 			 model.addAttribute("today", report.getToday());
 		 	
-			 //Update repository w/ added information
-			 weatherRepository.save(report);
+			 
 			 
 	        return "weatherScreen-Today";
 	    }
@@ -188,7 +195,7 @@ public class MainController {
 		 	
 		 	 
 			 model.addAttribute("report", report);
-			 model.addAttribute("tomorrow", report.getTomorrow());
+			 model.addAttribute("tomorrow", report.getFiveDayReport().getFiveDays().get(0));
 			 
 			 model.addAttribute("locationIndex", locationIndex);
 			 model.addAttribute("id", id);
@@ -228,59 +235,26 @@ public class MainController {
 	  *   	(used if user did not want to get their own API Key)
 	  */
 	 @RequestMapping({"weatherReport/GetSample"})
-	    public String getSample(@PathVariable("id") String id, @PathVariable("locationIndex") String locationIndex, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
+	    public String getSample(Model model) throws JsonMappingException, JsonProcessingException {
 		 	 
 		 	WeatherReport report = new WeatherReport();
 		 	
-		 	//GET SAMPLE REPORT
-			 	
-			 //If API call returned an error
-			 if(!report.getApiError().isEmpty()) {
+		 	//GET Sample Report
+		 	report = GetSampleInfo.getAllSamples().get(0);
+			
+			//If API call returned an error
+			if(!report.getApiError().isEmpty()) {
 			 	//Get API error message and return to homePage.html
 			 	userSearchPopupError = report.getApiError();
 			 	return "redirect:/";
-			 }
+			}
 			 	
 			 weatherRepository.save(report);
 			 return "redirect:/weatherReport/" + report.getId() + "/" + ((report.getLocations().size())-1) + "/" + report.getCity() + "/today";
 		 	
 		 
 	    }
-	 /*  weatherScreen-Today.html 
-	  * 	Display the Sample data if user did not want to get their own API Key
-	  */
-	 @RequestMapping({"weatherReport/sample/today"})
-	    public String getTodaysSampleReport(@PathVariable("id") String id, @PathVariable("locationIndex") String locationIndex, @PathVariable("location") String location, Model model) throws JsonMappingException, JsonProcessingException {
-		 	 WeatherReport report = weatherRepository.findById(id).get();
-		 	 
-		 	 //Get apiKey (used for OpenWeather precipitation+cloud map)
-		 	 Dotenv dotenv = Dotenv.load();
-			 String apiKey = dotenv.get("API_KEY");	
-		 	
-			 
-			//Gets the current weather Info
-			 report = GetTodaysWeather.todaysWeatherReport(report, Integer.parseInt(locationIndex));
-			//Gets the data for tomorrow and the 5 day report.
-		 	 report = GetFutureWeather.futureWeatherReport(report, Integer.parseInt(locationIndex));
-		 	 
-			 //Redirect if there is an api error	
-			 if(!report.getApiError().isEmpty()) {
-			 		//Get API error message and return to homePage.html
-			 		userSearchPopupError = report.getApiError();
-			 		return "redirect:/";
-			 }
-			 
-			 model.addAttribute("report", report);
-			 model.addAttribute("locationIndex", locationIndex);
-			 model.addAttribute("id", id);
-			 model.addAttribute("apiKey", apiKey);
-			 model.addAttribute("today", report.getToday());
-		 	
-			 //Update repository w/ added information
-			 weatherRepository.save(report);
-			 
-	        return "weatherScreen-Today";
-	    }
+
 	
 	 
 	 	

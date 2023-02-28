@@ -52,7 +52,7 @@ public class GetFiveDayReport {
 				
 				for(JsonNode triHourlyData : day) {
 				
-					long localTimeMilli = (triHourlyData.path("dt").asInt() + report.getTomorrow().getTimezone()) * 1000L;
+					long localTimeMilli = (triHourlyData.path("dt").asInt() + report.getToday().getTimezone()) * 1000L;
 					//If data is tomorrows data ( time >= tomorrow at midnight AND time <= midnight 2 days from now)
 					
 					TriHourlyReport triReport = new TriHourlyReport();
@@ -107,9 +107,13 @@ public class GetFiveDayReport {
 				//Add the list of triHourlyReports to the oneDays list
 				oneDay.setTriHourlyReports(triHourlyReports);
 				//Add Generic data to oneDay
-				oneDay.setTimezone(report.getTomorrow().getTimezone());
-				oneDay.setCityPopulation(report.getTomorrow().getCityPopulation());
+				oneDay.setTimezone(report.getToday().getTimezone());
+				oneDay.setCityPopulation(report.getToday().getCityPopulation());
 				oneDay.setDaysDate(daysAhead);
+				
+				oneDay.setCityPopulation(weatherReportRoot.path("city").path("population").asInt());
+				oneDay.setSunrise(weatherReportRoot.path("city").path("sunrise").asInt());
+				oneDay.setSunset(weatherReportRoot.path("city").path("sunset").asInt());
 				
 				//Save/Calc the day's summary data by calling GetFutureDaysCalculatedData.daysSummaryData
 				oneDay = GetFutureDaysCalculatedData.daysSummaryData(oneDay);

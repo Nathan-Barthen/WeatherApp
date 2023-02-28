@@ -37,7 +37,7 @@ public class FutureDayReport {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	
 	private String daysDate;
 	
@@ -79,10 +79,10 @@ public class FutureDayReport {
 	
 	
 	//Getters / Setters
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -108,7 +108,7 @@ public class FutureDayReport {
 		return daysDate.substring(0, daysDate.indexOf(","));
 	}
 
-
+	@JsonIgnore
 	public void setDaysDate(int daysAhead) {
 		Date today = new Date();
 		Calendar calendar = Calendar.getInstance();

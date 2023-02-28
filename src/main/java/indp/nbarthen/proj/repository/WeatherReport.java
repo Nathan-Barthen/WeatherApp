@@ -30,11 +30,11 @@ public class WeatherReport {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private TodayReport today;				 //Todays data
-	@OneToOne(cascade = CascadeType.ALL)
-	private FutureDayReport tomorrow;		 //Tomorrows data
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	private FiveDayReport fiveDayReport;  //List 5 indexes long. Each index is one day in the 5 day report.
+	private FiveDayReport fiveDayReport;  	//5-Day Forecast data.
+											//Tomorrow's Data is stored in fiveDayReport.fiveDays(1)
+												//Since the 5-Day Report if the future report, the first index would be tomorrow.
 	
 	private String apiError;
 	
@@ -43,7 +43,7 @@ public class WeatherReport {
 		country = "US"; 		//Current default US
 		locations = new Vector<Location>();
 		today = new TodayReport();
-		tomorrow = new FutureDayReport();
+		//tomorrow = new FutureDayReport();
 		fiveDayReport = new FiveDayReport();
 		
 		apiError = "";
@@ -120,13 +120,6 @@ public class WeatherReport {
 		this.today = today;
 	}
 
-
-	public FutureDayReport getTomorrow() {
-		return tomorrow;
-	}
-	public void setTomorrow(FutureDayReport tomorrow) {
-		this.tomorrow = tomorrow;
-	}
 
 
 	public FiveDayReport getFiveDayReport() {

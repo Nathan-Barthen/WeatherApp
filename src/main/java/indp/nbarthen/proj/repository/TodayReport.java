@@ -292,8 +292,8 @@ public class TodayReport {
 		        java.time.Instant.ofEpochMilli(timeMilli), ZoneId.of("UTC"));
 		    
 		    // Format the date time using a DateTimeFormatter
-		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm");
-		    String formattedDateTime = dateTime.format(formatter);
+		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
+		    String formattedDateTime = dateTime.format(formatter).toLowerCase();
 		    
 		    return formattedDateTime;
 	}
