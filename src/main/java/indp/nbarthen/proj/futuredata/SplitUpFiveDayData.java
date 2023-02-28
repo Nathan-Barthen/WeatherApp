@@ -31,7 +31,7 @@ public class SplitUpFiveDayData {
 					long oneDayAheadFromCurrInstanceTimestamp = oneDayAheadFromCurrInstance.toInstant(ZoneOffset.UTC).toEpochMilli();
 							
 					//Get local time for triHourlyData instance
-					long localTimeMilli = (triHourlyData.path("dt").asInt() + report.getTomorrow().getTimezone()) * 1000L;
+					long localTimeMilli = (triHourlyData.path("dt").asInt() + report.getToday().getTimezone()) * 1000L;
 					
 					//If data is from today (skip/do nothing)
 					if(localTimeMilli <= tomorrowMidnightTimestamp) {

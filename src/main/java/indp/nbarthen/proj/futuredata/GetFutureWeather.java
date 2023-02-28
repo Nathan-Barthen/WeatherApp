@@ -33,12 +33,12 @@ public class GetFutureWeather {
 	//Makes the API call to OpenWeather to get the 5-Day forecast information used for Tomorrow and 5Day page.
 	
 	/*
-	 * Calls additional functions to calculate and store data for tomorrow and 5Day-Forecast
+	 * Calls additional functions to calculate and store data for tomorrow and 5Day-Forecast.
 	 * Calls:
-	 * 		GetTomorrowsReport.tomorrowsTriHouryWeatherReport - saves Tomorrow's Report data.
 	 * 		
-	 * 		GetFutureDaysCalculatedData.daysSummaryData - gets the calculated data for a FutureDayReport
-	 * 			-Used for tomorrows report and the 5 days in the 5-Day Forecast (FiveDayReport.fiveDays)
+	 * 		GetFutureDaysCalculatedData.daysSummaryData - gets the calculated data for a FutureDayReport.
+	 * 			-Used for tomorrows report and the 5 days in the 5-Day Forecast (FiveDayReport.fiveDays).
+	 * 			-First index in FiveDayReport.fiveDays will be tomorrow's data.
 	 */
 	public static WeatherReport futureWeatherReport(WeatherReport report, int locationIndex) {
 		
@@ -62,17 +62,8 @@ public class GetFutureWeather {
 
 			
 
-			//Get and save tomorrow's generic and triHourlyReport data
-			report = GetTomorrowsReport.tomorrowsTriHouryWeatherReport(report, weatherReportRoot);
-			
-			//Calc/Save tomorrow's calculated summary data
-			FutureDayReport tmrw = report.getTomorrow();
-			tmrw = GetFutureDaysCalculatedData.daysSummaryData(tmrw);
-			report.setTomorrow(tmrw);
-			
-			
-			
-			//Gets data for the 5 Day Report
+						
+			//Gets data for the 5 Day Report (first index will be Tomorrows Information)
 			report = GetFiveDayReport.fiveDayReport(report, weatherReportRoot);
 			
 			
